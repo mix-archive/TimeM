@@ -1215,7 +1215,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by ncucf 2009.11.1"
+    IDR_MAINFRAME           "Time Machine modified by ncucf 2009.11.5"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"
@@ -1235,7 +1235,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_CHSTITLEDEFAULT     "中文字幕\r\n"
+    IDS_CHSTITLEDEFAULT     "字幕\r\n"
 END
 
 STRINGTABLE 

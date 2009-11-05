@@ -842,9 +842,9 @@ void CTimeMDoc::OnTitleBreakbyuser()
 		{
 	if(nBreakCnt>1)
 	{	
-		vtTitles[iBreak]->content.Replace(_T("- "),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的-
+		vtTitles[iBreak]->content.Replace(_T("- "),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 	
-		vtTitles[iBreak]->content.Replace(_T("-"),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的-
+		vtTitles[iBreak]->content.Replace(_T("-"),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 	
 	
 	}
@@ -903,11 +903,31 @@ void CTimeMDoc::OnTitleCboneline()
 			{
 				strUpLine += _T(" ");
 				strUpLine += strFirst;
+				strUpLine.Replace(_T("字幕 字幕"),_T("字幕"));
 			}
 			if(!strOthers.IsEmpty())
 			{
+				strDnLine.TrimRight();
+BOOL isdot=false;
+				if(strDnLine.GetLength()>1)
+				{
+					TCHAR tempc=strDnLine.GetAt(strDnLine.GetLength()-1);
+if(tempc!='.'&&tempc!='?'&&tempc!='!')
+{isdot=true;
+}
+				}
 				strDnLine += _T(" ");
+			if(isdot)
+			{
+				if(strOthers.GetLength()>1)
+				{
+TCHAR tempc2=strOthers[0];
+if(tempc2>='A'&&tempc2<='Z')
+strOthers.SetAt(0,tempc2+32);
+				}
+			}
 				strDnLine += strOthers;
+				
 			}
 			mapDel.insert(INT_PAIR(iItem, iItem));
 		}
@@ -1386,7 +1406,7 @@ void CTimeMDoc::PreProcessCC()
 		
 		CTitleHelper::CCSentence(pUnit->content);
 		CTitleHelper::RemoveDupSpace(pUnit->content);
-		CTitleHelper::CCMakeUpper(pUnit->content);
+		CTitleHelper::CCMakeUpper(pUnit->content);//大写 ncucf
 		if(pUnit->content.IsEmpty())
 		{
 			m_Action.Erase(iTitle);

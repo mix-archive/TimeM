@@ -679,18 +679,28 @@ BOOL CTitleHelper::BreakTitleUnit(int nPos, PTITLE_UNIT pUnit1, PTITLE_UNIT pUni
 	if(nPriorityPos > -1)
 	{
 		LPTSTR lpszData2 = pUnit2->content.GetBufferSetLength( nLen - nPriorityPos - 1);
-		CopyMemory(lpszData2, lpszData + nPriorityPos + 1, nLen - nPriorityPos - 1);
+		TCHAR str[256],str2[256];
+
+CopyMemory(str, lpszData + 31, 31);
+CopyMemory(str, lpszData + 31, 50);
+CopyMemory(str2, lpszData , 31);
+CopyMemory(str2, lpszData , 50);
+
+		CopyMemory(lpszData2, lpszData + nPriorityPos + 1, (nLen - nPriorityPos - 1)*sizeof(TCHAR));
 		pUnit2->content.ReleaseBufferSetLength(nLen - nPriorityPos - 1);
 		pUnit1->content.ReleaseBufferSetLength(nPriorityPos);
 
 		int nTimeLen = pUnit1->nEnd - pUnit1->nStart;
 		int nLen1 = pUnit1->content.GetLength();
 		int nLen2 = pUnit2->content.GetLength();
+
 		pUnit2->nEnd = pUnit1->nEnd;
 		pUnit1->nEnd = pUnit1->nStart + (nTimeLen*nLen1/(nLen1 + nLen2));
 		pUnit2->nStart = pUnit1->nEnd + 1;
 		pUnit2->dwFlags	= 0;
-
+		
+	
+	
 		return TRUE;
 	}
 	else
