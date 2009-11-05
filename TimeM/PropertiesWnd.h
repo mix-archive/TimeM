@@ -47,6 +47,7 @@ public:
 	BOOL VideoFileOpen(LPCTSTR lpszFile);
 	HDC GetVideoDC();
 	void ReleaseDC(HDC hDC);
+	CString m_avi_filepath;
 protected:
 	CPropertiesToolBar			m_wndToolBar;
 	CWMPPlayer4					m_Player;

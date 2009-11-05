@@ -41,7 +41,7 @@ UINT g_nMsg_SyncVideoTitle = ::RegisterWindowMessage(_T("Synchronize Title of Vi
 DWORD WINAPI PlaySyncThd(LPVOID lpParam);
 
 // CTimeMDoc
-
+CString CTimeMDoc::m_titlefilepath;//自动打开字幕文件,必须用static
 IMPLEMENT_DYNCREATE(CTimeMDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
@@ -1421,6 +1421,11 @@ void CTimeMDoc::OnVideoFileOpen()
 	if((pPlayer != NULL)
 		&&(pPlayer->OnVideoFileOpen()))
 	{
+	
+		CString seps=_T(".srt,.ass,.ssa");
+		m_titlefilepath=CTitleHelper::GetEnumFileInfo(pPlayer->m_avi_filepath,seps);
+		if(m_titlefilepath!=_T(""))
+theApp.OpenDocumentFile(m_titlefilepath);
 //		m_bThdBreak = FALSE;
 //		ResumeThread(m_hSyncThd);
 	}

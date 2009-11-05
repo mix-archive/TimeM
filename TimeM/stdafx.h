@@ -47,7 +47,7 @@
 #include <stack>
 #include <map>
 #include <strsafe.h>
-
+#include "algorithm"
 using namespace std;
 void _cdecl WriteLogLine(LPTSTR lpszLine, ...);
 

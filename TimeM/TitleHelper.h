@@ -1,12 +1,14 @@
 #pragma once
 #include "TitleUnit.h"
-
+typedef vector< CString> CStringvect;
 class CTitleHelper
 {
 public:
 	CTitleHelper(void);
 	~CTitleHelper(void);
-
+	static CString CTitleHelper::Getpathfromname(CString& name);
+static	void getmytoken(LPCTSTR yuanstr,LPCTSTR seps,vector<CString>& vectemp);
+static CString CTitleHelper::GetEnumFileInfo(LPCTSTR filepath,LPCTSTR seps);
 	static CString	FormatComma(int nValue);
 	static CString	FormatSSATime(int nTime);
 	static CString	FormatTime(int nTime);				// million second

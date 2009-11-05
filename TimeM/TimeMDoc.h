@@ -18,7 +18,6 @@
 class CTitleLView;
 class CPropertiesWnd;
 class CTitlePaneDlg;
-
 class CTimeMDoc : public CDocument
 {
 protected: // 仅从序列化创建
@@ -33,6 +32,7 @@ protected:
 	BOOL			m_bBakModified;
 	LONG			m_nSaveState;
 	CCriticalSection	m_CriticalSect;
+static CString m_titlefilepath;//自动打开字幕文件,必须用static
 public:
 
 	DWORD			m_dwCharsetForDisp;

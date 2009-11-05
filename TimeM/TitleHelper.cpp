@@ -8,7 +8,126 @@ CTitleHelper::CTitleHelper(void)
 CTitleHelper::~CTitleHelper(void)
 {
 }
+CString CTitleHelper::Getpathfromname(CString& name)
+	{int i=0;
+	CString str;
+	for(i=lstrlen(name);i>0;i--)
+		if(name[i]=='\\')
+			break;
+	
 
+	str=name.Left(i);
+name=name.Mid(i+1);
+
+for(i=lstrlen(name);i>0;i--)
+		if(name[i]=='.')
+			break;
+
+name=name.Left(i);	
+
+	return str;
+	}
+void CTitleHelper::getmytoken(LPCTSTR yuanstr,LPCTSTR seps,vector<CString>& vectemp)
+{
+
+	TCHAR* str=new TCHAR[lstrlen(yuanstr)+1];
+	lstrcpy(str,yuanstr);
+	//ATLTRACE("taken:%s\n",str);
+	vectemp.clear();
+	//char seps[]=" ";
+	TCHAR *token;
+	token=_tcstok(str,seps);
+	if(token==NULL)
+	{
+		vectemp.push_back(_T(""));
+	}
+	while(token!=NULL)
+	{
+		vectemp.push_back(token);
+		token=_tcstok(NULL,seps);
+	}
+
+	delete []str;
+}
+CString CTitleHelper::GetEnumFileInfo(LPCTSTR filepath,LPCTSTR seps)//InternalName FileDescription LegalTradeMarks OriginalFileName ProductName ProductVersion
+{
+	CStringvect backbufvect;
+CString fileonlypath,filecplpath,rtfile;
+filecplpath=filepath;
+		fileonlypath=CTitleHelper::Getpathfromname(filecplpath);
+
+
+		CString pathfile;
+	backbufvect.clear();
+	CStringvect sepsvect;
+	getmytoken(seps,_T(",;"),sepsvect);
+WIN32_FIND_DATA FindFileData;
+CString findstr;
+findstr+=fileonlypath;
+findstr+=_T("\\*");
+	HANDLE  hFind = FindFirstFile(findstr, &FindFileData);
+
+
+
+
+  if (hFind == INVALID_HANDLE_VALUE) 
+  {
+
+    return rtfile;
+  }
+  CStringvect::const_iterator it;
+LPCTSTR houzui=_tcsrchr(FindFileData.cFileName,'.');
+if(houzui)
+houzui=_tcslwr((TCHAR*)houzui);
+if(houzui)
+{
+	it=std::find(sepsvect.begin(),sepsvect.end(),houzui);
+if(it!=sepsvect.end())
+{
+	findstr=fileonlypath;
+	findstr+=_T("\\");
+		findstr+=FindFileData.cFileName;
+backbufvect.push_back(findstr);
+}
+}
+
+ while (FindNextFile(hFind, &FindFileData) != 0) 
+ {  
+  
+houzui=_tcsrchr(FindFileData.cFileName,'.');
+if(houzui)
+houzui=_tcslwr((TCHAR*)houzui);
+if(houzui)
+{
+it=std::find(sepsvect.begin(),sepsvect.end(),houzui);
+if(it!=sepsvect.end())
+{
+	findstr=fileonlypath;
+	findstr+=_T("\\");
+		findstr+=FindFileData.cFileName;
+backbufvect.push_back(findstr);
+}
+}
+    }
+
+FindClose(hFind);
+int pos=0;
+filecplpath.Insert(0,'\\');
+filecplpath.AppendChar('.');
+
+for(int i=0;i<backbufvect.size();i++)
+{
+	
+pos=backbufvect[i].Find(filecplpath);
+if(pos!=-1)
+{
+rtfile=backbufvect[i];
+break;
+}
+}
+
+return rtfile;
+}
 CString	CTitleHelper::FormatComma(int nValue)
 {
 	CString strOutput;

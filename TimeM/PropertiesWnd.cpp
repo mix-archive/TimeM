@@ -279,6 +279,7 @@ BOOL CPropertiesWnd::OnVideoFileOpen()
 	CFileDialog dlgOpen(TRUE, 0, 0, 0, szFilter);
 	if(IDOK == dlgOpen.DoModal())
 	{
+		m_avi_filepath=dlgOpen.GetPathName();
 		m_Player.put_URL(dlgOpen.GetPathName());
 		return TRUE;
 	}
