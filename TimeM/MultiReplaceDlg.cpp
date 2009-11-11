@@ -382,16 +382,28 @@ void CMultiReplaceDlg::OnOK()
 		m_mapUnits.clear();
 		int nCnt = m_RplItemList.GetItemCount();
 		PREPLACE_UNIT pUnitNew = NULL;
+CKeepMap<CString,LPCTSTR,CString,LPCTSTR> mykeepmap;
+REPLACE_UNIT newUnit;
 		for(int iItem = 0; iItem < nCnt; iItem ++)
 		{
 			if(m_RplItemList.GetCheck(iItem))
 			{
-				REPLACE_UNIT newUnit;
+				
+		
 				newUnit.strToFind = m_RplItemList.GetItemText(iItem, 1);
 				newUnit.strReplTo = m_RplItemList.GetItemText(iItem, 2);
-				m_mapUnits.insert(REPL_PAIR(newUnit.strToFind.GetLength(), newUnit));
-			}
+mykeepmap[newUnit.strToFind]=newUnit.strReplTo;
+
+				}
 		}
+mykeepmap.sort();
+for(vector<CString>::const_reverse_iterator it=mykeepmap.m_mapstr.rbegin();it!=mykeepmap.m_mapstr.rend();++it)
+{
+newUnit.strToFind =*it;
+				newUnit.strReplTo = mykeepmap[*it];
+	m_mapUnits.insert(REPL_PAIR(newUnit.strToFind.GetLength(), newUnit));
+}		
+
 	}
 	AfxGetMainWnd()->SendMessage(MSG_TM_DOREPLACE, 0, 0);
 }

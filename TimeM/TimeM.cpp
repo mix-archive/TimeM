@@ -331,7 +331,12 @@ CDocument* CTimeMApp::OpenDocumentFile(LPCTSTR lpszFileName)
 	if(SaveAllModified())
 	{
 		CloseAllDocuments(FALSE);
+		CTimeMDoc::m_srttitlename=lpszFileName;
+		CTimeMDoc::m_srttitlename=CTimeMDoc::m_srttitlename.Left(CTimeMDoc::m_srttitlename.GetLength()-4);
+		CTimeMDoc::m_srttitlename+=_T(".namelist.txt");
+
 		return CWinAppEx::OpenDocumentFile(lpszFileName);
+
 	}
 	return NULL;
 }

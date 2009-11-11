@@ -139,6 +139,11 @@ void CCheckValidDlg::OnBnClickedOk()
 		m_pDoc->m_vtChkParams.push_back(iterChk->second);
 	}
 	m_ListCheck.SetItemCount(m_pDoc->m_vtChkParams.size());
+	if(IsexistEngInC)
+	{
+	ShellExecute(0,0,CTimeMDoc::m_srttitlename,0,0,1);
+	}
+
 }
 
 LRESULT CCheckValidDlg::OnQueryCellTextColor(WPARAM wParam, LPARAM lParam)

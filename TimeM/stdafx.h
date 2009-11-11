@@ -50,6 +50,8 @@
 #include <strsafe.h>
 #include "algorithm"
 using namespace std;
+#include "keepmap.h"
+#include "ReadAUStdioFile.h"
 void _cdecl WriteLogLine(LPTSTR lpszLine, ...);
 
 #ifdef _UNICODE

@@ -384,12 +384,27 @@ BOOL IsEngChar(TCHAR ens)
 {
 	if((ens>='A'&&ens<='Z')||(ens>='a'&&ens<='z'))
 		return true;
-if(ens=='&'||ens=='.')
+if(ens=='&'||ens=='.'||ens==' ')
 	return true;
 
 return false;
 }
-BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,set<CString>& engnameset)
+void CTitleHelper::UpSpecialnoun(CString& nounstr)
+{
+	for(int i=0;i<nounstr.GetLength();i++)
+	{
+		if(nounstr[i]>='a'&&nounstr[i]<='z')
+		{
+if(i==0)
+	nounstr.SetAt(i,nounstr[i]-32);//变成大写
+else if(nounstr[i-1]==' ')
+	nounstr.SetAt(i,nounstr[i]-32);//变成大写
+		}
+	
+	}
+
+}
+BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,set<CString>& engnameset)//ncucf
 {
 	CString ChiRow;
 	CString tpname;
@@ -407,12 +422,16 @@ for(int i=0;i<ChiRow.GetLength();i++)
 {
 if(IsEngChar(ChiRow[i]))
 {
+
 tpname.AppendChar(ChiRow[i]);
 }
 else
 {
+	tpname.Trim();
 	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&')
 	{
+tpname.MakeLower();
+		CTitleHelper::UpSpecialnoun(tpname);
 engnameset.insert(tpname);//说明是英文名
 rtflag=true;
 	}

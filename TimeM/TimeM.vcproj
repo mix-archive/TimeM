@@ -290,6 +290,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ReadAUStdioFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ReadAUStdioFile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SaveOptionPage.cpp"
 				>
 			</File>
@@ -485,6 +493,10 @@
 			</File>
 			<File
 				RelativePath=".\InsertIntervalDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\keepmap.h"
 				>
 			</File>
 			<File

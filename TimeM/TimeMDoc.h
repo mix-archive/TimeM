@@ -33,8 +33,10 @@ protected:
 	LONG			m_nSaveState;
 	CCriticalSection	m_CriticalSect;
 static CString m_titlefilepath;//自动打开字幕文件,必须用static
-public:
 
+
+public:
+static CString m_srttitlename;
 	DWORD			m_dwCharsetForDisp;
 
 	BOOL			m_bUnicode;

@@ -42,6 +42,7 @@ DWORD WINAPI PlaySyncThd(LPVOID lpParam);
 
 // CTimeMDoc
 CString CTimeMDoc::m_titlefilepath;//自动打开字幕文件,必须用static
+CString CTimeMDoc::m_srttitlename;//辅助生成namelist.txt
 IMPLEMENT_DYNCREATE(CTimeMDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
@@ -1443,9 +1444,9 @@ void CTimeMDoc::OnVideoFileOpen()
 	{
 	
 		CString seps=_T(".srt,.ass,.ssa");
-		m_titlefilepath=CTitleHelper::GetEnumFileInfo(pPlayer->m_avi_filepath,seps);
+		m_titlefilepath=CTitleHelper::GetEnumFileInfo(pPlayer->m_avi_filepath,seps);//ncucf
 		if(m_titlefilepath!=_T(""))
-theApp.OpenDocumentFile(m_titlefilepath);
+theApp.OpenDocumentFile(m_titlefilepath);//ncucf
 //		m_bThdBreak = FALSE;
 //		ResumeThread(m_hSyncThd);
 	}
@@ -2465,13 +2466,16 @@ BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
 	if(IsexistEngInC)
 	{
 
-		CStdioFile file1;
-		if(file1.Open(complete_path(_T("namelist.txt")),CFile::modeCreate|CFile::modeWrite))
+		CReadAUStdioFile file1;
+		if(file1.Open(CTimeMDoc::m_srttitlename,CFile::modeCreate|CFile::modeWrite))//ncucf
 		{
-			for(set<CString>::const_reverse_iterator it=engnameset.rbegin();it!=engnameset.rend();++it)
+			for(set<CString>::const_iterator it=engnameset.begin();it!=engnameset.end();++it)
 			{
 				file1.WriteString((*it));
-				file1.WriteString(_T("\n"));
+				file1.WriteString(_T("\r\n"));
+				file1.WriteString((*it));
+				file1.WriteString(_T("\r\n"));
+				file1.WriteString(_T("\r\n"));
 
 			}
 			file1.Close();
