@@ -2424,7 +2424,61 @@ void CTimeMDoc::ChkTimeLessThan(int nMinTime)
 		}
 	}
 }
+LPCTSTR complete_path(LPCTSTR filename)
+{
+	static TCHAR completepath[256];
+	if(_tcsstr(filename,_T(":"))==NULL)
+	{
+	GetModuleFileName(NULL,completepath,256);
+	TCHAR *pt=_tcsrchr(completepath,'\\');
 
+	lstrcpy(pt+1,filename);
+	}
+	else
+	{
+	lstrcpy(completepath,filename);
+	
+	}
+	return completepath;
+
+}
+BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
+{	BOOL IsexistEngInC=0;
+	PTITLE_UNIT pUnit;
+	CHECK_PARAM chkParam;
+	set<CString> engnameset;
+	int nSize = m_Action.GetItemCount();
+	for(int iItem = 0; iItem < nSize; iItem ++)
+	{
+		pUnit = m_Action.GetItem(iItem, FALSE);
+		if(pUnit != NULL)
+		{
+			if(CTitleHelper::GetEngNameFromRow(pUnit->content,engnameset))
+			{
+				IsexistEngInC=true;
+				chkParam.nErrType = 8;
+				chkParam.nTitleId = iItem;
+				m_mapChkParams.insert(make_pair(iItem, chkParam));
+			}
+		}
+	}
+	if(IsexistEngInC)
+	{
+
+		CStdioFile file1;
+		if(file1.Open(complete_path(_T("namelist.txt")),CFile::modeCreate|CFile::modeWrite))
+		{
+			for(set<CString>::const_reverse_iterator it=engnameset.rbegin();it!=engnameset.rend();++it)
+			{
+				file1.WriteString((*it));
+				file1.WriteString(_T("\n"));
+
+			}
+			file1.Close();
+		}
+	}
+	return IsexistEngInC;
+}
 void CTimeMDoc::ChkTitleLineMoreThan(int nLineMaxCnt)
 {
 	PTITLE_UNIT pUnit;

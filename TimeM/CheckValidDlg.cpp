@@ -36,6 +36,7 @@ void CCheckValidDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON5, m_cbtn5);
 	DDX_Control(pDX, IDC_BUTTON6, m_cbtn6);
 	DDX_Control(pDX, IDC_BUTTON7, m_cbtn7);
+	DDX_Control(pDX, IDC_BUTTON8, m_cbtn8);
 	DDX_Control(pDX, IDC_EDIT2, m_TimeMax);
 	DDX_Control(pDX, IDC_EDIT3, m_TimeMin);
 	DDX_Text(pDX, IDC_EDIT1, m_nChsCntMax);
@@ -68,6 +69,7 @@ BOOL CCheckValidDlg::OnInitDialog()
 	m_cbtn5.SetColor(RGB(255, 128, 64));
 	m_cbtn6.SetColor(RGB(255, 128, 128));
 	m_cbtn7.SetColor(RGB(64, 128, 128));
+	m_cbtn8.SetColor(RGB(128, 255, 128));
 	CheckDlgButton(IDC_CHECK1, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK2, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK3, BST_CHECKED);
@@ -75,7 +77,7 @@ BOOL CCheckValidDlg::OnInitDialog()
 	CheckDlgButton(IDC_CHECK5, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK6, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK7, BST_CHECKED);
-
+	CheckDlgButton(IDC_CHECK8, BST_CHECKED);
 	m_ListCheck.InsertColumn(0, _T("´íÎóÐÐºÅ"), 0, 60);
 	m_ListCheck.InsertColumn(1, _T("´íÎóÀàÐÍ"), 0, 200);
 
@@ -125,6 +127,12 @@ void CCheckValidDlg::OnBnClickedOk()
 	{
 		m_pDoc->ChkTitleLineMoreThan(m_nTitleLineCnt);
 	}
+	BOOL IsexistEngInC=0;
+	if(IsDlgButtonChecked(IDC_CHECK8))
+	{
+		IsexistEngInC=m_pDoc->ChkEngInChineseRow();
+	}
+
 	MAP_CHKPARAMS::iterator iterChk;
 	for(iterChk = m_pDoc->m_mapChkParams.begin(); iterChk != m_pDoc->m_mapChkParams.end(); iterChk ++)
 	{
@@ -156,6 +164,8 @@ LRESULT CCheckValidDlg::OnQueryCellBkColor(WPARAM wParam, LPARAM lParam)
 		return m_cbtn6.GetColor();
 	case 7:
 		return m_cbtn7.GetColor();
+	case 8:
+		return m_cbtn8.GetColor();
 	}
 	return GetSysColor(COLOR_WINDOW);
 }
@@ -198,6 +208,9 @@ void CCheckValidDlg::OnLvnGetdispinfoList1(NMHDR *pNMHDR, LRESULT *pResult)
 				break;
 			case 7:
 				strInfo.LoadString(IDS_CHKERRINFO7);
+				break;
+			case 8:
+				strInfo.LoadString(IDS_CHKERRINFO8);
 				break;
 			}
 			StringCbCopy(pDispInfo->item.pszText, pDispInfo->item.cchTextMax, strInfo);

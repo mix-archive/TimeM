@@ -138,7 +138,7 @@ public:
 	void ChkTimeLessThan(int nMinTime);
 	void ChkTitleLineMoreThan(int nLineMaxCnt);
 	void ClearOverlap();
-
+BOOL ChkEngInChineseRow();
 	void GenerateName(LPTSTR lpszFile, LPCTSTR pOrgName, LPCTSTR lpszLangName, WORD wFmtID);
 	void WriteExpTitleFile(LPCTSTR lpszFileName, 
 		VT_TITLE& vtTitle, int iStart, int iEnd,

@@ -22,6 +22,7 @@ static CString CTitleHelper::GetEnumFileInfo(LPCTSTR filepath,LPCTSTR seps);
 	static void		CCSentence(CString& strSentence);
 static void		CCMakeUpper(CString& strSentence);
 static BOOL Islowerfun(TCHAR charactor,int pos,const CString& strSentence);
+static BOOL GetEngNameFromRow(const CString& strSentence,set<CString>& engnameset);
 
 	static void		RemoveAssCode(CString& strSentence);
 	static BOOL		IsWordBreak(TCHAR ch);

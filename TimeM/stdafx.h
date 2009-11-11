@@ -44,6 +44,7 @@
 #include <shlwapi.h>
 
 #include <vector>
+#include <set>
 #include <stack>
 #include <map>
 #include <strsafe.h>

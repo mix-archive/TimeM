@@ -380,7 +380,49 @@ int CTitleHelper::SelectPriorityChar(LPCTSTR lpszData, int nStartPos, int nPreBr
 		}
 	}
 }
+BOOL IsEngChar(TCHAR ens)
+{
+	if((ens>='A'&&ens<='Z')||(ens>='a'&&ens<='z'))
+		return true;
+if(ens=='&'||ens=='.')
+	return true;
 
+return false;
+}
+BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,set<CString>& engnameset)
+{
+	CString ChiRow;
+	CString tpname;
+	BOOL rtflag=0;
+	int npos=strSentence.Find('\n');
+	if(npos!=-1)
+	{
+ChiRow=strSentence.Left(npos);
+	}
+	else
+	{
+	ChiRow=strSentence;
+	}
+for(int i=0;i<ChiRow.GetLength();i++)
+{
+if(IsEngChar(ChiRow[i]))
+{
+tpname.AppendChar(ChiRow[i]);
+}
+else
+{
+	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&')
+	{
+engnameset.insert(tpname);//说明是英文名
+rtflag=true;
+	}
+tpname=_T("");//清空，为保存下一个英文名做准备
+
+}
+}
+
+return rtflag;
+}
 void CTitleHelper::RemoveAssCode(CString& strSentence)
 {
 	int nLen = strSentence.GetLength();
