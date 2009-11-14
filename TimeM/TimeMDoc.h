@@ -141,6 +141,7 @@ public:
 	void ChkTitleLineMoreThan(int nLineMaxCnt);
 	void ClearOverlap();
 BOOL ChkEngInChineseRow();
+void ChkFullShapeInChineseRow();
 	void GenerateName(LPTSTR lpszFile, LPCTSTR pOrgName, LPCTSTR lpszLangName, WORD wFmtID);
 	void WriteExpTitleFile(LPCTSTR lpszFileName, 
 		VT_TITLE& vtTitle, int iStart, int iEnd,
@@ -246,6 +247,8 @@ public:
 	afx_msg void OnToolCmbyuser();
 	afx_msg void OnToolCompare();
 	afx_msg void OnToolCheck();
+	afx_msg void OnCreateNamelist();
+	afx_msg void OnImplementNamelist();
 	afx_msg void OnUpdateToolCheck(CCmdUI *pCmdUI);
 	afx_msg void OnFileExport();
 	afx_msg void OnTitleAutosnap();

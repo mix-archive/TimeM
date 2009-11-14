@@ -17,14 +17,6 @@
 #define IDS_COL_TITLE_END               104
 #define IDS_COL_TITLE_CONTENT           105
 #define IDS_COL_TITLE_CHCOUNT           106
-#define IDS_CHKERRINFO1                 187
-#define IDS_CHKERRINFO2                 188
-#define IDS_CHKERRINFO3                 189
-#define IDS_CHKERRINFO4                 190
-#define IDS_CHKERRINFO5                 191
-#define IDS_CHKERRINFO6                 192
-#define IDS_CHKERRINFO7                 193
-#define IDS_CHKERRINFO8                 194
 #define IDS_CMDTYPE_FILENAME            114
 #define IDS_CMDTYPE_EDITNAME            115
 #define IDS_CMDTYPE_TITLENAME           116
@@ -91,6 +83,14 @@
 #define ID_VIEW_TASKPANE                171
 #define ID_VIEW_OUTPUTWND               172
 #define ID_VIEW_PROPERTIESWND           173
+#define IDS_CHKERRINFO1                 187
+#define IDS_CHKERRINFO2                 188
+#define IDS_CHKERRINFO3                 189
+#define IDS_CHKERRINFO4                 190
+#define IDS_CHKERRINFO5                 191
+#define IDS_CHKERRINFO6                 192
+#define IDS_CHKERRINFO7                 193
+#define IDS_CHKERRINFO8                 194
 #define IDR_THEME_MENU                  200
 #define IDR_MENU_CBLISTCONTEXT          201
 #define IDS_EDIT_MENU                   306
@@ -250,6 +250,8 @@
 #define ID_CB_FROMTO                    32789
 #define ID_32792                        32792
 #define ID_FILE_EXPORTFU                32793
+#define ID_32794                        32794
+#define ID_32795                        32795
 #define ID_FILE_IMPORT                  32827
 #define ID_FILE_APPEND                  32828
 #define ID_FILE_EXPORT                  32829
@@ -335,7 +337,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32794
+#define _APS_NEXT_COMMAND_VALUE         32796
 #define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           313
 #endif

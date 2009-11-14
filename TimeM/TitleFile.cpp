@@ -2,7 +2,7 @@
 #include "resource.h"
 #include "TitleFile.h"
 #include "TitleHelper.h"
-
+BOOL CTitleFile::singlenflag=0;
 CTitleFile::CTitleFile(void)
 {
 }
@@ -18,6 +18,8 @@ BOOL CTitleFile::IsLineEnd(PBUF_READ pReadData)
 	if(pReadData->nUnicodeState == 0)
 	{
 		if(CSTR_EQUAL == CompareStringA(LOCALE_USER_DEFAULT, 0, (LPCSTR)pData, 2, "\r\n", 2))
+			return TRUE;
+		if(CSTR_EQUAL == CompareStringA(LOCALE_USER_DEFAULT, 0, (LPCSTR)pData, 1, "\n", 1))
 			return TRUE;
 	}
 	else
@@ -47,6 +49,8 @@ BOOL CTitleFile::ReadSubStart(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 		{
 			CHAR	szTime[16];
 			LPSTR pAData = (LPSTR)pData;
+			CHAR monitorbuf[256];
+			strncpy(monitorbuf,pAData,255);
 			if((pAData[2] == ':')&&
 				(pAData[5] == ':')&&
 				(pAData[8] == ',')&&
@@ -114,7 +118,7 @@ BOOL CTitleFile::ReadSubEnd(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 				if(nCntCvt == 16)
 					pUnit->nEnd = CTitleHelper::GetTimeValue(CString(szWTime));
 
-				pReadData->dwBufOffset += 14*sizeof(CHAR);
+				pReadData->dwBufOffset += (14-singlenflag)*sizeof(CHAR);
 				return TRUE;
 			}
 		}
@@ -131,7 +135,7 @@ BOOL CTitleFile::ReadSubEnd(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 
 				pUnit->nEnd = CTitleHelper::GetTimeValue(CString(szTime));
 
-				pReadData->dwBufOffset += 14*sizeof(WCHAR);
+				pReadData->dwBufOffset += (14-singlenflag)*sizeof(WCHAR);
 				return TRUE;
 			}
 		}
@@ -155,13 +159,31 @@ BOOL CTitleFile::ReadSubTitle(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 				pReadData->dwBufOffset += 2*sizeof(CHAR);
 				return TRUE;
 			}
-
+			else if(pEnter ==NULL)
+			{
+			pEnter = StrStrA(pAData, "\n");
+			if(pEnter == pAData)
+			{
+				pReadData->dwBufOffset += 1*sizeof(CHAR);
+				return TRUE;
+			}
+			
+			}
+if(!singlenflag)
 			while((pEnter != NULL)
 				&&(CSTR_EQUAL != CompareStringA(LOCALE_USER_DEFAULT, 0, pEnter, 4, "\r\n\r\n", 4)))
 			{
 				pEnter = StrStrA(pEnter + 1*sizeof(CHAR), "\r\n");
 			}
+else
+{
+			while((pEnter != NULL)
+				&&(CSTR_EQUAL != CompareStringA(LOCALE_USER_DEFAULT, 0, pEnter, 2, "\n\n", 2)))
+			{
+				pEnter = StrStrA(pEnter + 1*sizeof(CHAR), "\n");
+			}
 
+}
 			ULONG nLen = 0;
 			if(NULL == pEnter)
 			{
@@ -177,7 +199,7 @@ BOOL CTitleFile::ReadSubTitle(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 				pUnit->content.ReleaseBuffer();
 			}
 
-			pReadData->dwBufOffset += (nLen + 4)*sizeof(CHAR);
+			pReadData->dwBufOffset += (nLen + 4/(1+singlenflag))*sizeof(CHAR);
 		}
 		else
 		{
@@ -189,13 +211,33 @@ BOOL CTitleFile::ReadSubTitle(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 				pReadData->dwBufOffset += 2*sizeof(WCHAR);
 				return TRUE;
 			}
-
+				else if(pEnter ==NULL)
+			{
+			pEnter = StrStrW(pWData, L"\n");
+			if(pEnter == pWData)
+			{
+				pReadData->dwBufOffset += 1*sizeof(WCHAR);
+				return TRUE;
+			}
+			
+			}
+if(!singlenflag)
+{
 			while((pEnter != NULL)
 				&&(CSTR_EQUAL != CompareStringW(LOCALE_USER_DEFAULT, 0, pEnter, 4, L"\r\n\r\n", 4)))
 			{
 				pEnter = StrStrW(pEnter + 1*sizeof(WCHAR), L"\r\n");
 			}
+}
+else
+{
+			while((pEnter != NULL)
+				&&(CSTR_EQUAL != CompareStringW(LOCALE_USER_DEFAULT, 0, pEnter, 2, L"\n\n", 2)))
+			{
+				pEnter = StrStrW(pEnter + 1*sizeof(CHAR), L"\n");
+			}
 
+}
 			ULONG nLen = 0;
 			if(NULL == pEnter)
 			{
@@ -208,7 +250,7 @@ BOOL CTitleFile::ReadSubTitle(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 			CopyMemory(pBuf, pWData, nLen*sizeof(WCHAR));
 			pUnit->content.ReleaseBuffer();
 
-			pReadData->dwBufOffset += (nLen + 4)*sizeof(WCHAR);
+			pReadData->dwBufOffset += (nLen + 4/(1+singlenflag))*sizeof(WCHAR);
 		}
 		return TRUE;
 	}
@@ -393,10 +435,15 @@ void CTitleFile::StepInvalidChar(PBUF_READ pReadData)
 void CTitleFile::StepALine(PBUF_READ pReadData)
 {
 	LPBYTE pData = pReadData->bufFile + pReadData->dwBufOffset;
+
 	if(pReadData->nUnicodeState == 0)
 	{
 		LPSTR pAData = (LPSTR)pData;
 		LPSTR pEnter = StrStrA(pAData, "\r\n");
+		if(pEnter!=NULL)
+		{
+		singlenflag=false;//说明是rn结合的换行符ncucf
+		}
 		if(pEnter == pAData)
 		{
 			pReadData->dwBufOffset += 2*sizeof(CHAR);
@@ -404,30 +451,59 @@ void CTitleFile::StepALine(PBUF_READ pReadData)
 		}
 		if(pEnter == NULL)
 		{
+ pEnter = StrStrA(pAData, "\n");
+	if(pEnter == pAData)
+		{
+singlenflag=true;	
+			pReadData->dwBufOffset += 1*sizeof(CHAR);
+			return;
+		}
+if(pEnter == NULL)
+		{
 			pReadData->dwBufOffset = pReadData->dwBufSize;
 			return;
 		}
-
+else
+{
+	singlenflag=true;
+}
+		}
 		ULONG nLen = (ULONG)(pEnter - pAData);
-		pReadData->dwBufOffset += (nLen + 2)*sizeof(CHAR);
+		pReadData->dwBufOffset += (nLen + (2-singlenflag))*sizeof(CHAR);
 	}
 	else
 	{
 		LPWSTR pWData = (LPWSTR)pData;
 		LPWSTR pEnter = StrStrW(pWData, L"\r\n");
+		if(pEnter!=NULL)
+		{singlenflag=false;
+		}
 		if(pEnter == pWData)
 		{
 			pReadData->dwBufOffset += 2*sizeof(WCHAR);
 			return;
 		}
-		if(pEnter == NULL)
+				if(pEnter == NULL)
+		{
+ pEnter = StrStrW(pWData, L"\n");
+	if(pEnter == pWData)
+		{
+			singlenflag=true;
+			pReadData->dwBufOffset += 1*sizeof(CHAR);
+			return;
+		}
+if(pEnter == NULL)
 		{
 			pReadData->dwBufOffset = pReadData->dwBufSize;
 			return;
 		}
-
+else
+{
+	singlenflag=true;
+}
+				}
 		ULONG nLen = (ULONG)(pEnter - pWData);
-		pReadData->dwBufOffset += (nLen + 2)*sizeof(WCHAR);
+		pReadData->dwBufOffset += (nLen + (2-singlenflag))*sizeof(WCHAR);
 	}
 }
 

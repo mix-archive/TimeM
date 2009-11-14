@@ -127,10 +127,10 @@ void CCheckValidDlg::OnBnClickedOk()
 	{
 		m_pDoc->ChkTitleLineMoreThan(m_nTitleLineCnt);
 	}
-	BOOL IsexistEngInC=0;
+	
 	if(IsDlgButtonChecked(IDC_CHECK8))
 	{
-		IsexistEngInC=m_pDoc->ChkEngInChineseRow();
+		m_pDoc->ChkFullShapeInChineseRow();
 	}
 
 	MAP_CHKPARAMS::iterator iterChk;
@@ -139,10 +139,6 @@ void CCheckValidDlg::OnBnClickedOk()
 		m_pDoc->m_vtChkParams.push_back(iterChk->second);
 	}
 	m_ListCheck.SetItemCount(m_pDoc->m_vtChkParams.size());
-	if(IsexistEngInC)
-	{
-	ShellExecute(0,0,CTimeMDoc::m_srttitlename,0,0,1);
-	}
 
 }
 

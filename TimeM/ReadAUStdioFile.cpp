@@ -104,7 +104,7 @@ void CReadAUStdioFile::checkspecialchar()
 	if(m_IsAlreadyWrite==false&&bSaveByUnicode)
 	{
 m_IsAlreadyWrite=true;
-ULONG ll=GetLength();
+ULONGLONG ll=GetLength();
 if(ll==0)
 {
 	SeekToBegin();
@@ -210,7 +210,9 @@ ASSERT_VALID(this);
 	nLen = rString.GetLength();
 	if (nLen != 0 && lpsz[nLen-1] == '\n')
 		rString.GetBufferSetLength(nLen-1);
-
+if(m_IsUnicodeFile)
+{rString.TrimRight('\r');}
+		
 	return nLen != 0;
 
 

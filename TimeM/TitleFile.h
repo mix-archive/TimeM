@@ -42,4 +42,5 @@ public:
 	static CStringA		ConvertCodePageStr(UINT nCPFrom, UINT nCPTo, const CStringA& strAnsi);
 	static CString		LCMapStrCN(UINT nSortKey, UINT nMapFlags, const CString& strInput);
 	static CStringA		ConvertUnicodeToUTF8(const CStringW& strSource);
+static BOOL singlenflag;//用单个\n来换行
 };

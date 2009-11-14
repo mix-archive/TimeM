@@ -300,3 +300,4 @@ rNextPosition++;
 
 
 }
+typedef CKeepMap<CString,LPCTSTR,CString,LPCTSTR> CStr2KeepMap;

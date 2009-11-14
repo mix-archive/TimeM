@@ -118,6 +118,9 @@ BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
 	ON_COMMAND(ID_TOOL_CMBYUSER, &CTimeMDoc::OnToolCmbyuser)
 	ON_COMMAND(ID_TOOL_COMPARE, &CTimeMDoc::OnToolCompare)
 	ON_COMMAND(ID_TOOL_CHECK, &CTimeMDoc::OnToolCheck)
+	ON_COMMAND(ID_32794, &CTimeMDoc::OnCreateNamelist)
+	ON_COMMAND(ID_32795, &CTimeMDoc::OnImplementNamelist)
+
 	ON_COMMAND(ID_FILE_EXPORT, &CTimeMDoc::OnFileExport)
 	ON_COMMAND(ID_TITLE_AUTOSNAP, &CTimeMDoc::OnTitleAutosnap)
 	ON_COMMAND(ID_TITLE_SNAPNEXT, &CTimeMDoc::OnTitleSnapnext)
@@ -2274,6 +2277,56 @@ void CTimeMDoc::OnToolCompare()
 	CCompareTitleDlg dlgCompare;
 	dlgCompare.DoModal();
 }
+void CTimeMDoc::OnCreateNamelist()
+{
+	BOOL IsexistEngInC=0;
+		IsexistEngInC=ChkEngInChineseRow();
+	if(IsexistEngInC)
+	{
+	ShellExecute(0,0,CTimeMDoc::m_srttitlename,0,0,1);
+	}
+
+}
+void CTimeMDoc::OnImplementNamelist()
+{
+
+CStr2KeepMap mykeepmap;
+
+		CReadAUStdioFile file1;
+		if(file1.Open(CTimeMDoc::m_srttitlename,CFile::modeRead))//ncucf
+		{
+BOOL rdflag=0;
+CString strsource,strdestination;
+while(1)
+{
+rdflag=file1.ReadString(strsource);
+if(rdflag==false)
+break;
+						rdflag=file1.ReadString(strdestination);
+if(rdflag==false)
+break;
+mykeepmap[strsource]=strdestination;
+
+						rdflag=file1.ReadString(strsource);
+if(rdflag==false)
+break;
+}
+file1.Close();
+		}
+mykeepmap.sort();
+for(int it=0;it<mykeepmap.m_mapstr.size();++it)
+{
+
+	EditReplace(mykeepmap.m_mapstr[it],
+				mykeepmap[(UINT)it],
+				0,
+				0,
+				1,
+				0);
+}		
+UpdateRefWin();
+	
+}
 
 void CTimeMDoc::OnToolCheck()
 {
@@ -2443,11 +2496,32 @@ LPCTSTR complete_path(LPCTSTR filename)
 	return completepath;
 
 }
+void CTimeMDoc::ChkFullShapeInChineseRow()//ncucf
+{
+PTITLE_UNIT pUnit;
+	CHECK_PARAM chkParam;
+	CStr2KeepMap engnameset;
+	int nSize = m_Action.GetItemCount();
+	for(int iItem = 0; iItem < nSize; iItem ++)
+	{
+		pUnit = m_Action.GetItem(iItem, FALSE);
+		if(pUnit != NULL)
+		{
+			if(CTitleHelper::FindFullshapeFromRow(pUnit->content))
+			{
+				
+				chkParam.nErrType = 8;
+				chkParam.nTitleId = iItem;
+				m_mapChkParams.insert(make_pair(iItem, chkParam));
+			}
+		}
+	}
+}
 BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
 {	BOOL IsexistEngInC=0;
 	PTITLE_UNIT pUnit;
 	CHECK_PARAM chkParam;
-	set<CString> engnameset;
+	CStr2KeepMap engnameset;
 	int nSize = m_Action.GetItemCount();
 	for(int iItem = 0; iItem < nSize; iItem ++)
 	{
@@ -2457,9 +2531,7 @@ BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
 			if(CTitleHelper::GetEngNameFromRow(pUnit->content,engnameset))
 			{
 				IsexistEngInC=true;
-				chkParam.nErrType = 8;
-				chkParam.nTitleId = iItem;
-				m_mapChkParams.insert(make_pair(iItem, chkParam));
+			
 			}
 		}
 	}
@@ -2467,13 +2539,30 @@ BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
 	{
 
 		CReadAUStdioFile file1;
-		if(file1.Open(CTimeMDoc::m_srttitlename,CFile::modeCreate|CFile::modeWrite))//ncucf
+		if(file1.Open(CTimeMDoc::m_srttitlename,CFile::modeCreate|CFile::modeNoTruncate|CFile::modeReadWrite))//ncucf
 		{
-			for(set<CString>::const_iterator it=engnameset.begin();it!=engnameset.end();++it)
+BOOL rdflag=0;
+CString strsource,strdestination;
+while(1)
+{
+rdflag=file1.ReadString(strsource);
+if(rdflag==false)
+break;
+						rdflag=file1.ReadString(strdestination);
+if(rdflag==false)
+break;
+engnameset[strsource]=strdestination;
+
+						rdflag=file1.ReadString(strsource);
+if(rdflag==false)
+break;
+}
+			file1.SetLength(0);
+			for(int it=0;it!=engnameset.m_mapstr.size();++it)
 			{
-				file1.WriteString((*it));
+				file1.WriteString(engnameset.m_mapstr[it]);
 				file1.WriteString(_T("\r\n"));
-				file1.WriteString((*it));
+				file1.WriteString(engnameset[(UINT)it]);
 				file1.WriteString(_T("\r\n"));
 				file1.WriteString(_T("\r\n"));
 

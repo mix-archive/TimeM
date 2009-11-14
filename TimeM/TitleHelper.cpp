@@ -404,7 +404,23 @@ else if(nounstr[i-1]==' ')
 	}
 
 }
-BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,set<CString>& engnameset)//ncucf
+
+BOOL CTitleHelper::FindFullshapeFromRow(const CString& strSentence)//ncucf
+{
+	TCHAR buffshape[10][2]={_T("。"),_T("，"),_T("？"),_T("‘"),_T("“"),_T("；"),_T("："),_T("【"),_T("】"),_T("、")};
+	int findflag=0;
+	for(int i=0;i<10;i++)
+	{
+	findflag=strSentence.Find(buffshape[i]);
+	if(findflag!=-1)
+	{
+		return true;
+	}
+
+	}
+	return false;
+}
+BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,CStr2KeepMap& engnameset)//ncucf
 {
 	CString ChiRow;
 	CString tpname;
@@ -432,7 +448,7 @@ else
 	{
 tpname.MakeLower();
 		CTitleHelper::UpSpecialnoun(tpname);
-engnameset.insert(tpname);//说明是英文名
+engnameset[tpname]=tpname;//说明是英文名
 rtflag=true;
 	}
 tpname=_T("");//清空，为保存下一个英文名做准备
@@ -539,16 +555,19 @@ else
 
 if(isdot)
 {
+	if(pos>1&&strSentence[pos-2]=='.'&&(pos<strSentence.GetLength()-1&&strSentence[pos+1]!=' '))
+return false;
+	else
 	return true;
 }
 
 	if(charactor=='i')
 	{
-if(strSentence[pos-1]==' ')
+if(strSentence[pos-1]==' '||strSentence[pos-1]=='?'||strSentence[pos-1]=='-'||strSentence[pos-1]==','||strSentence[pos-1]=='.')
 {
 if(pos<strSentence.GetLength()-1)
 {
-if(strSentence[pos+1]==' '||strSentence[pos+1]=='\'')
+if(strSentence[pos+1]==' '||strSentence[pos+1]=='\''||strSentence[pos+1]=='?'||strSentence[pos+1]=='-'||strSentence[pos+1]==','||strSentence[pos+1]=='.')
 	return true;
 else
 return false;
