@@ -622,7 +622,12 @@ void CTitleHelper::CCSentence(CString& strSentence)
 		case _T(']'):	if(nFlag == 0)nFlag = 2;	iPos -- ;continue;
 		case _T('}'):	if(nFlag == 0)nFlag = 3;	iPos -- ;continue;
 		case _T('>'):	if(nFlag == 0)nFlag = 4;	iPos -- ;continue;
-		case _T(':'):	nFlag = 100;				break;
+		case _T(':'):	if(iPos>0&&(lpszData[iPos-1]<'0'||lpszData[iPos-1]>'9'))
+						{nFlag = 100;				break;}
+						else
+						{
+							nFlag = 0;break;
+						}
 		case _T('\r'):
 			iPos -- ;
 			continue;
@@ -642,7 +647,10 @@ void CTitleHelper::CCSentence(CString& strSentence)
 			break;
 		}
 		if(nFlag == 100)
+		{
+		
 			break;
+		}
 		if(nFlag > 0)
 		{
 			iPos -- ;
