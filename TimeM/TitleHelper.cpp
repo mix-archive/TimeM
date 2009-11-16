@@ -446,6 +446,7 @@ else
 	tpname.Trim();
 	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&')
 	{
+tpname.Trim();
 tpname.MakeLower();
 		CTitleHelper::UpSpecialnoun(tpname);
 engnameset[tpname]=tpname;//说明是英文名

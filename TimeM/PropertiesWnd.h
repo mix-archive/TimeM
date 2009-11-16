@@ -94,6 +94,8 @@ public:
 	afx_msg void OnTitleInsert();
 	afx_msg void OnTitleMultiinsert();
 	afx_msg void OnOptionAutosave();
+afx_msg void OnUNSURESET();
+	
 	afx_msg void OnUpdateVideoSynctitle(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateOptionAutosave(CCmdUI *pCmdUI);
 	afx_msg void OnTitleSnapUpdateCmdUIRange(CCmdUI *pCmdUI);

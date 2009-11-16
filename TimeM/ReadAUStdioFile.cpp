@@ -96,6 +96,16 @@ lpszResult=lpsz;
 		Afx_clearerr_s(m_pStream);
 		AfxThrowFileException(CFileException::genericException, _doserrno, m_strFileName);
 	}
+
+if(m_IsUnicodeFile)
+{
+if(lpsz)
+if(lpsz[lstrlen(lpsz)-1]=='\r')
+{
+lpsz[lstrlen(lpsz)-1]=0;
+}
+
+}
 	return lpszResult;
 }
 
@@ -104,7 +114,7 @@ void CReadAUStdioFile::checkspecialchar()
 	if(m_IsAlreadyWrite==false&&bSaveByUnicode)
 	{
 m_IsAlreadyWrite=true;
-ULONGLONG ll=GetLength();
+ULONG ll=GetLength();
 if(ll==0)
 {
 	SeekToBegin();
@@ -210,9 +220,9 @@ ASSERT_VALID(this);
 	nLen = rString.GetLength();
 	if (nLen != 0 && lpsz[nLen-1] == '\n')
 		rString.GetBufferSetLength(nLen-1);
+
 if(m_IsUnicodeFile)
 {rString.TrimRight('\r');}
-		
 	return nLen != 0;
 
 

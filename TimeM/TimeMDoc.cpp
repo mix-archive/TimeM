@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_TITLE_PREVLINE, &CTimeMDoc::OnUpdateTitlePrevline)
 	ON_UPDATE_COMMAND_UI(ID_TITLE_NEXTLINE, &CTimeMDoc::OnUpdateTitleNextline)
 	ON_UPDATE_COMMAND_UI(ID_OPTION_AUTOSAVE, &CTimeMDoc::OnUpdateOptionAutosave)
+	ON_UPDATE_COMMAND_UI(ID_UNSURE_SET, &CTimeMDoc::OnUpdateUNSURESET)
 	ON_COMMAND(ID_EDIT_SORTSTART, &CTimeMDoc::OnEditSortstart)
 	ON_COMMAND(ID_EDIT_SORTEND, &CTimeMDoc::OnEditSortend)
 	ON_COMMAND(ID_EDIT_SORTCONTENT, &CTimeMDoc::OnEditSortcontent)
@@ -137,6 +138,7 @@ BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
 	ON_COMMAND(ID_TITLE_SINGLELINETITLE, &CTimeMDoc::OnTitleSinglelinetitle)
 	ON_COMMAND(ID_FILE_SPLITTO, &CTimeMDoc::OnFileSplitto)
 	ON_COMMAND(ID_OPTION_AUTOSAVE, &CTimeMDoc::OnOptionAutosave)
+	ON_COMMAND(ID_UNSURE_SET, &CTimeMDoc::OnUNSURESET)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REPLACE, &CTimeMDoc::OnUpdateEditReplace)
 	ON_COMMAND(ID_FILE_EXPORTFU, &CTimeMDoc::OnFileExportfu)
 END_MESSAGE_MAP()
@@ -161,6 +163,7 @@ CTimeMDoc::CTimeMDoc()
 	m_DetailWnd = NULL;
 	m_bBakModified = FALSE;
 	m_nSaveState = 0;
+
 }
 
 CTimeMDoc::~CTimeMDoc()
@@ -2101,8 +2104,10 @@ void CTimeMDoc::SortChanged(int nCol, BOOL bAscending)
 				break;
 			case 6:
 				CString strItem;
-				int nCnt = CTitleHelper::CountTitleLine(pUnit->content, strItem);
-				mapIntSort.insert(make_pair(nCnt, iItem));
+				
+				//int nCnt = CTitleHelper::CountTitleLine(pUnit->content, strItem);
+				//mapIntSort.insert(make_pair(nCnt, iItem));
+mapIntSort.insert(make_pair(pUnit->IsNeedModify, iItem));
 				break;
 			}
 		}
@@ -2305,6 +2310,8 @@ break;
 						rdflag=file1.ReadString(strdestination);
 if(rdflag==false)
 break;
+strsource.Trim();
+strdestination.Trim();
 mykeepmap[strsource]=strdestination;
 
 						rdflag=file1.ReadString(strsource);
@@ -3180,7 +3187,14 @@ void CTimeMDoc::OnFileSplitto()
 		}
 	}
 }
+void CTimeMDoc::OnUNSURESET()
+{
 
+		int nPos=GetCurrentPos();
+PTITLE_UNIT pUnit = m_Action.GetItem(nPos);
+pUnit->IsNeedModify=!pUnit->IsNeedModify;
+UpdateRefWin();
+}
 void CTimeMDoc::OnOptionAutosave()
 {
 	// TODO: Add your command handler code here
@@ -3190,10 +3204,14 @@ void CTimeMDoc::OnOptionAutosave()
 		theApp.m_Params.SetAutoSave(TRUE);
 	AfxGetApp()->WriteProfileInt( _T("Settings"), _T("IsAutoSave"), theApp.m_Params.IsAutoSave());
 }
+void CTimeMDoc::OnUpdateUNSURESET(CCmdUI *pCmdUI)
+{
+	
 
+}
 void CTimeMDoc::OnUpdateOptionAutosave(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(theApp.m_Params.IsAutoSave());
+	pCmdUI->SetCheck(theApp.m_Params.IsAutoSave());//
 }
 
 void CTimeMDoc::OnUpdateEditReplace(CCmdUI *pCmdUI)

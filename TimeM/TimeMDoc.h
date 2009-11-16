@@ -45,7 +45,7 @@ static CString m_srttitlename;
 
 	int				m_nSortCol;
 	BOOL			m_bAscending;
-
+	
 	BOOL			m_bAutoSnap;
 	UINT			m_nSnapCount;
 
@@ -272,7 +272,10 @@ public:
 	afx_msg void OnTitleSinglelinetitle();
 	afx_msg void OnFileSplitto();
 	afx_msg void OnOptionAutosave();
+	afx_msg void OnUNSURESET();
 	afx_msg void OnUpdateOptionAutosave(CCmdUI *pCmdUI);
+afx_msg void OnUpdateUNSURESET(CCmdUI *pCmdUI);
+
 	afx_msg void OnUpdateEditReplace(CCmdUI *pCmdUI);
 	afx_msg void OnFileExportfu();
 };

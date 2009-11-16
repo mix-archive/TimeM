@@ -48,6 +48,8 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_COMMAND(ID_TITLE_INSERT, &CPropertiesWnd::OnTitleInsert)
 	ON_COMMAND(ID_TITLE_MULTIINSERT, &CPropertiesWnd::OnTitleMultiinsert)
 	ON_COMMAND(ID_OPTION_AUTOSAVE, &CPropertiesWnd::OnOptionAutosave)
+	ON_COMMAND(ID_UNSURE_SET, &CPropertiesWnd::OnUNSURESET)
+		
 	ON_UPDATE_COMMAND_UI(ID_OPTION_AUTOSAVE, &CPropertiesWnd::OnUpdateOptionAutosave)
 	ON_UPDATE_COMMAND_UI(ID_VIDEO_SYNCTITLE, &CPropertiesWnd::OnUpdateVideoSynctitle)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_TITLE_SNAPLINE, ID_TITLE_SNAPBETWEENTWOMARK, &CPropertiesWnd::OnTitleSnapUpdateCmdUIRange)
@@ -380,6 +382,8 @@ void CPropertiesWnd::OnVideoSynctitle()
 
 void CPropertiesWnd::OnUpdateOptionAutosave(CCmdUI *pCmdUI)
 {
+	
+	
 	POSITION posDocTmpl = AfxGetApp()->GetFirstDocTemplatePosition();
 	while(posDocTmpl)
 	{
@@ -392,6 +396,8 @@ void CPropertiesWnd::OnUpdateOptionAutosave(CCmdUI *pCmdUI)
 				pDoc->OnUpdateOptionAutosave(pCmdUI);
 		}
 	}
+
+
 }
 
 void CPropertiesWnd::OnUpdateVideoSynctitle(CCmdUI *pCmdUI)
@@ -537,7 +543,21 @@ void CPropertiesWnd::OnTitleMultiinsert()
 		}
 	}
 }
-
+void CPropertiesWnd::OnUNSURESET()
+{
+	POSITION posDocTmpl = AfxGetApp()->GetFirstDocTemplatePosition();
+	while(posDocTmpl)
+	{
+		CDocTemplate* pDocTmpl = AfxGetApp()->GetNextDocTemplate(posDocTmpl);
+		POSITION posDoc = pDocTmpl->GetFirstDocPosition();
+		while(posDoc)
+		{
+			CTimeMDoc* pDoc = (CTimeMDoc*)pDocTmpl->GetNextDoc(posDoc);
+			if(NULL != pDoc)
+				pDoc->OnUNSURESET();
+		}
+	}
+}
 void CPropertiesWnd::OnOptionAutosave()
 {
 	POSITION posDocTmpl = AfxGetApp()->GetFirstDocTemplatePosition();

@@ -638,6 +638,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\mainfram2.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\output_wnd.ico"
 				>
 			</File>

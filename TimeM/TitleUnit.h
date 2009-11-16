@@ -27,6 +27,11 @@ typedef struct tagTitleUnit
 	CString strEffect;
 	CString	content;
 	DWORD	dwFlags;
+BOOL	IsNeedModify;
+tagTitleUnit()
+{
+IsNeedModify=0;
+}
 }TITLE_UNIT, *PTITLE_UNIT;
 
 inline void InitializeUnit(PTITLE_UNIT pUnit)

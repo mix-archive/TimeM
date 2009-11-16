@@ -252,6 +252,8 @@
 #define ID_FILE_EXPORTFU                32793
 #define ID_32794                        32794
 #define ID_32795                        32795
+#define ID_                             32796
+#define ID_32797                        32797
 #define ID_FILE_IMPORT                  32827
 #define ID_FILE_APPEND                  32828
 #define ID_FILE_EXPORT                  32829
@@ -330,6 +332,7 @@
 #define ID_HELP_LESSON                  32986
 #define ID_FILE_SPLITTO                 32988
 #define ID_OPTION_AUTOSAVE              32990
+#define ID_UNSURE_SET                   32991
 #define ID_VIEW_TOOLBAR                 0xE800
 
 // Next default values for new objects
@@ -337,7 +340,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32796
+#define _APS_NEXT_COMMAND_VALUE         32798
 #define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           313
 #endif
