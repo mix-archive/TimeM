@@ -27,10 +27,10 @@ typedef struct tagTitleUnit
 	CString strEffect;
 	CString	content;
 	DWORD	dwFlags;
-BOOL	IsNeedModify;
+BOOL	IsTranSure;
 tagTitleUnit()
 {
-IsNeedModify=0;
+IsTranSure=1;
 }
 }TITLE_UNIT, *PTITLE_UNIT;
 

@@ -49,8 +49,8 @@ BOOL CTitleFile::ReadSubStart(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 		{
 			CHAR	szTime[16];
 			LPSTR pAData = (LPSTR)pData;
-			CHAR monitorbuf[256];
-			strncpy(monitorbuf,pAData,255);
+			//CHAR monitorbuf[256];
+		//	strncpy(monitorbuf,pAData,255);
 			if((pAData[2] == ':')&&
 				(pAData[5] == ':')&&
 				(pAData[8] == ',')&&
@@ -61,6 +61,17 @@ BOOL CTitleFile::ReadSubStart(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 			{
 				ZeroMemory(szTime, 16*sizeof(CHAR));
 				CopyMemory(szTime, pAData, 12*sizeof(CHAR));
+				LPBYTE pnumber;
+				CHAR bufstar[8];
+				pnumber=(LPBYTE)&pAData[0]-7;
+				if(pnumber<pReadData->bufFile)
+				pnumber=pReadData->bufFile;
+memcpy(bufstar,(const char*)pnumber,sizeof(CHAR)*7);
+bufstar[7]=0;
+if(strchr(bufstar,'*')!=NULL)
+{
+pUnit->IsTranSure=0;//ncucf
+}
 
 				WCHAR szWTime[16];
 				int nCntCvt = MultiByteToWideChar(CP_ACP, 0, szTime, 16, szWTime, 16);
@@ -85,6 +96,19 @@ BOOL CTitleFile::ReadSubStart(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 			{
 				ZeroMemory(szTime, 16*sizeof(WCHAR));
 				CopyMemory(szTime, pWData, 12*sizeof(WCHAR));
+				
+								WCHAR *pnumber;
+				WCHAR bufstar[8];
+				pnumber=&pWData[0]-7;
+				if(pnumber<(LPWSTR)pReadData->bufFile)
+				pnumber=(LPWSTR)pReadData->bufFile;
+memcpy(bufstar,pnumber,sizeof(WCHAR)*7);
+bufstar[7]=0;
+if(wcschr(bufstar,'*')!=NULL)
+{
+pUnit->IsTranSure=0;//ncucf
+}
+				
 				pUnit->nStart = CTitleHelper::GetTimeValue(CString(szTime));
 
 				pReadData->dwBufOffset += 17*sizeof(WCHAR);

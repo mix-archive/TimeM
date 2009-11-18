@@ -2107,7 +2107,7 @@ void CTimeMDoc::SortChanged(int nCol, BOOL bAscending)
 				
 				//int nCnt = CTitleHelper::CountTitleLine(pUnit->content, strItem);
 				//mapIntSort.insert(make_pair(nCnt, iItem));
-mapIntSort.insert(make_pair(pUnit->IsNeedModify, iItem));
+mapIntSort.insert(make_pair(pUnit->IsTranSure, iItem));
 				break;
 			}
 		}
@@ -3191,9 +3191,12 @@ void CTimeMDoc::OnUNSURESET()
 {
 
 		int nPos=GetCurrentPos();
+		if(nPos!=-1)
+		{
 PTITLE_UNIT pUnit = m_Action.GetItem(nPos);
-pUnit->IsNeedModify=!pUnit->IsNeedModify;
+pUnit->IsTranSure=!pUnit->IsTranSure;
 UpdateRefWin();
+		}
 }
 void CTimeMDoc::OnOptionAutosave()
 {

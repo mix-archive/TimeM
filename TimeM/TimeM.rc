@@ -1227,7 +1227,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.16"
+    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.18"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"
@@ -1391,7 +1391,7 @@ BEGIN
     IDS_AUTOSAVEREADERROR   "打开自动保存文件遇到了错误，仍然为您尝试打开您选择的文件！"
     IDS_SAVESTDTIPS         "时间轴已经修改，需要先保存再继续吗？\r\n选择是保存，选择否放弃修改，选择取消放弃当前动作！"
     IDS_SAVETRANSTIPS       "翻译稿已经修改，需要保存再继续吗？\r\n选择是保存，选择否放弃修改，选择取消放弃当前动作！"
-    IDS_COL_TITLE_LINENUM   "待定"
+    IDS_COL_TITLE_LINENUM   "准确"
     IDS_OUTPUT_WND          "字幕编辑窗口"
     IDS_PROPERTIES_WND      "视频播放"
 END
