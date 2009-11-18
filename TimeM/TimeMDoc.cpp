@@ -849,9 +849,11 @@ void CTimeMDoc::OnTitleBreakbyuser()
 		{
 	if(nBreakCnt>1)
 	{	
-		vtTitles[iBreak]->content.Replace(_T("- "),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 	
-		vtTitles[iBreak]->content.Replace(_T("-"),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+	vtTitles[iBreak]->content.TrimLeft(_T("- "));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+		vtTitles[iBreak]->content.TrimLeft(_T("-"));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+		vtTitles[iBreak]->content.Replace(_T("\n- "),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+		vtTitles[iBreak]->content.Replace(_T("\n-"),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 	
 	
 	}
@@ -2312,6 +2314,7 @@ if(rdflag==false)
 break;
 strsource.Trim();
 strdestination.Trim();
+CTitleHelper::UpSpecialnoun(strsource);
 mykeepmap[strsource]=strdestination;
 
 						rdflag=file1.ReadString(strsource);
@@ -2558,6 +2561,7 @@ break;
 						rdflag=file1.ReadString(strdestination);
 if(rdflag==false)
 break;
+CTitleHelper::UpSpecialnoun(strsource);
 engnameset[strsource]=strdestination;
 
 						rdflag=file1.ReadString(strsource);
