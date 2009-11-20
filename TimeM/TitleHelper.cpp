@@ -245,22 +245,14 @@ int CTitleHelper::GetTimeValue(const CString& strTime)
 CString	CTitleHelper::FormatSRTString(int nSeqNo, PTITLE_UNIT pUnit)
 {
 	CString strItem;
-	if(pUnit->IsTranSure)
-	{
+
+		nSeqNo+=(!pUnit->IsTranSure)*10000;//ncucf
 	strItem.Format(_T("%d\r\n%s --> %s\r\n%s\r\n"),
 		nSeqNo,
 		CTitleHelper::FormatTime(pUnit->nStart),
 		CTitleHelper::FormatTime(pUnit->nEnd),
 		pUnit->content);
-	}
-	else//ncucf
-	{
-	strItem.Format(_T("*%d\r\n%s --> %s\r\n%s\r\n"),
-		nSeqNo,
-		CTitleHelper::FormatTime(pUnit->nStart),
-		CTitleHelper::FormatTime(pUnit->nEnd),
-		pUnit->content);
-	}
+	
 
 	if(pUnit->content.GetLength() > 0)
 		strItem.Append(_T("\r\n"));

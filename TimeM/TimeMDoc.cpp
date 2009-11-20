@@ -1589,17 +1589,22 @@ void CTimeMDoc::OnEditCopy()
 		return;
 
 	int nLen = strAllSel.GetLength();
-	if(OpenClipboard(hWndMain))
-	{
-		hgblCopy = GlobalAlloc(GMEM_MOVEABLE, (nLen + 1)*sizeof(TCHAR));
-		lpstrData = (LPTSTR)GlobalLock(hgblCopy);
 
+		hgblCopy = ::GlobalAlloc(GHND, (nLen + 1)*sizeof(TCHAR));//GMEM_MOVEABLE
+		lpstrData = (LPTSTR)GlobalLock(hgblCopy);
+	if(::OpenClipboard(hWndMain))//
+	{
+		CHAR buff[256]=("testestestest");
+		GlobalUnlock(hgblCopy);
 		CopyMemory(lpstrData, (LPCTSTR)strAllSel, nLen*sizeof(TCHAR));
 		lpstrData[nLen] = 0;
-
-		SetClipboardData(CF_TEXT, hgblCopy);
-		CloseClipboard();
+		::EmptyClipboard();
+			CopyMemory(lpstrData, (LPCSTR)buff, nLen*sizeof(CHAR));
+		::SetClipboardData(CF_TEXT, hgblCopy);
+		::CloseClipboard();
 	}
+
+
 }
 
 void CTimeMDoc::OnEditCut()
@@ -1617,7 +1622,7 @@ void CTimeMDoc::OnEditPaste()
 	if(!IsClipboardFormatAvailable(CF_TEXT))
 		return;
 
-	if(OpenClipboard(hWndMain))
+	if(OpenClipboard(hWndMain))//
 	{
 		m_Action.BeginRecordAction();
 		int nPastePos = GetCurrentPos();

@@ -68,7 +68,7 @@ BOOL CTitleFile::ReadSubStart(PBUF_READ pReadData, PTITLE_UNIT pUnit)
 				pnumber=pReadData->bufFile;
 memcpy(bufstar,(const char*)pnumber,sizeof(CHAR)*7);
 bufstar[7]=0;
-if(strchr(bufstar,'*')!=NULL)
+if(atoi(bufstar)/10000==1)
 {
 pUnit->IsTranSure=0;//ncucf
 }
@@ -104,7 +104,7 @@ pUnit->IsTranSure=0;//ncucf
 				pnumber=(LPWSTR)pReadData->bufFile;
 memcpy(bufstar,pnumber,sizeof(WCHAR)*7);
 bufstar[7]=0;
-if(wcschr(bufstar,'*')!=NULL)
+if(_wtoi(bufstar)/10000==1)
 {
 pUnit->IsTranSure=0;//ncucf
 }
