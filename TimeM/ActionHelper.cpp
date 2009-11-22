@@ -38,8 +38,11 @@ void CActionHelper::EndRecordAction()
 	if(m_pvtAction->size() != 0)
 	{
 		WriteLogLine(_T("EndRecordAction m_pvtAction(0x%08x)\r\n"), m_pvtAction);
-		m_stkUndo.push(m_pvtAction);
+	
+		
 		ClearStack(m_stkRedo);
+	//ClearStack(m_stkUndo);//ncucf只保留最后一条
+	m_stkUndo.push(m_pvtAction);
 	}
 	else
 	{
@@ -95,6 +98,26 @@ BOOL CActionHelper::Insert(int nPos, PTITLE_UNIT pUnit)
 	pAUnit->unitTitle.dwFlags	= pUnit->dwFlags;
 	WriteLogLine(_T("CActionHelper::Insert(%d, %s)\r\n"), nPos, pUnit->content);
 	m_pvtAction->push_back(pAUnit);
+	return TRUE;
+}
+BOOL CActionHelper::ModifyContent(int nPos, PTITLE_UNIT pUnit)
+{
+	PTITLE_UNIT& olduint=m_vtTitle.at(nPos);
+	if(m_pvtAction == NULL)
+		return FALSE;
+	PACTION_UNIT pAUnit		= new ACTION_UNIT;
+	pAUnit->nActionType			= ACTTYPE_MODIFY;
+	pAUnit->nActionPos			= nPos;
+	pAUnit->unitTitle.nStart	= olduint->nStart;
+	pAUnit->unitTitle.nEnd		= olduint->nEnd;
+	pAUnit->unitTitle.content	= olduint->content;
+	pAUnit->unitTitle.dwFlags	= olduint->dwFlags;
+	WriteLogLine(_T("CActionHelper::Insert(%d, %s)\r\n"), nPos, pUnit->content);
+	m_pvtAction->push_back(pAUnit);
+	
+olduint->content=pUnit->content;
+olduint->dwFlags=pUnit->dwFlags;
+
 	return TRUE;
 }
 

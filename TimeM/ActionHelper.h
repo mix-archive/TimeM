@@ -3,7 +3,10 @@
 
 class CActionHelper
 {
+
 public:
+
+
 	CActionHelper();
 	~CActionHelper(void);
 protected:
@@ -22,6 +25,8 @@ public:
 
 	// insert
 	BOOL Insert(int nPos, PTITLE_UNIT pUnit);
+BOOL ModifyContent(int nPos, PTITLE_UNIT pUnit);
+
 	BOOL PushBack(PTITLE_UNIT pUnit);
 
 	// delete

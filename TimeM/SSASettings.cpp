@@ -49,6 +49,7 @@ void CSSASettings::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSSASettings, CDialog)
+	ON_BN_CLICKED(IDOK, &CSSASettings::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -130,7 +131,7 @@ void CSSASettings::SaveRecentCodes()
 	if(!m_strPostCode.IsEmpty())
 	{
 		strKey.Format(_T("%d"), iCode);
-		WritePrivateProfileString(_T("PrevCode"), strKey, m_strPostCode, szModule);
+		WritePrivateProfileString(_T("PostCode"), strKey, m_strPostCode, szModule);
 		iCode ++;
 	}
 
@@ -141,7 +142,7 @@ void CSSASettings::SaveRecentCodes()
 		if(m_strPostCode.CompareNoCase(strCode) != 0)
 		{
 			strKey.Format(_T("%d"), iCode);
-			WritePrivateProfileString(_T("PrevCode"), strKey, strCode, szModule);
+			WritePrivateProfileString(_T("PostCode"), strKey, strCode, szModule);
 			iCode ++;
 		}
 	}
@@ -180,4 +181,10 @@ void CSSASettings::ReadRecentCodes()
 		m_cbLinePosts.AddString(szLineCodes);
 		iPrevCode ++;
 	}
+}
+
+void CSSASettings::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	OnOK();
 }

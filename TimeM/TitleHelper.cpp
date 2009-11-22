@@ -447,10 +447,12 @@ tpname.AppendChar(ChiRow[i]);
 }
 else
 {
+
+	tpname.TrimRight(_T("-"));
 	tpname.Trim();
-	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
+	if(tpname.GetLength()>1&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
 	{
-tpname.Trim();
+
 tpname.MakeLower();
 		CTitleHelper::UpSpecialnoun(tpname);
 engnameset[tpname]=tpname;//说明是英文名
@@ -803,13 +805,32 @@ pUnit2->content.TrimLeft();
 		return FALSE;
 	}
 }
-
+TCHAR fuhaobuf[]={',','.','?',';','!'};
 BOOL CTitleHelper::BreakUnitByShare(int nShare, PTITLE_UNIT pUnit1, PTITLE_UNIT pUnit2)
 {
 	if( nShare < 2)
 		return FALSE;
 	int nLen = pUnit1->content.GetLength();
 	int nPos = nLen / nShare;
+	int breakpos=0;
+	int minnum=100;
+	int curnum=0;
+	for(int i=0;i<5;i++)
+	{
+breakpos=pUnit1->content.Find(fuhaobuf[i],nPos);
+if(breakpos!=-1)
+{
+curnum=breakpos-nPos;
+
+	if(minnum>curnum)
+		minnum=curnum;
+}
+
+	}
+if(minnum<10)
+{
+nPos+=minnum;
+}
 
 	return BreakTitleUnit(nPos, pUnit1, pUnit2);
 }

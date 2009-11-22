@@ -110,12 +110,11 @@ BEGIN
     BUTTON      ID_TITLE_SNAPLINESTART
     BUTTON      ID_TITLE_SNAPLINEEND
     SEPARATOR
-	BUTTON      ID_TITLE_INSERT
-
+    BUTTON      ID_TITLE_INSERT
     BUTTON      ID_TITLE_MULTIINSERT
     SEPARATOR
     BUTTON      ID_OPTION_AUTOSAVE
-  	BUTTON      ID_UNSURE_SET
+    BUTTON      ID_UNSURE_SET
     BUTTON      ID_HIDE_ASSCODE
 END
 
@@ -1227,7 +1226,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.18"
+    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.22"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"
@@ -1459,7 +1458,7 @@ END
 
 STRINGTABLE 
 BEGIN
-	ID_TITLE_INSERT         "插入一行空白字幕\n插入单行"
+    ID_TITLE_INSERT         "插入一行空白字幕\n插入单行"
     ID_TITLE_MULTIINSERT    "插入多行空白字幕\n插入多行"
     ID_TITLE_EXTEND         "延长选择行的时间轴至临近的下一行开始\n延长时间轴"
     ID_TITLE_DELETE         "删除选择的字幕行\n删除行"

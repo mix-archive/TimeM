@@ -81,14 +81,14 @@ BOOL CCheckValidDlg::OnInitDialog()
 	m_ListCheck.InsertColumn(0, _T("¥ÌŒÛ––∫≈"), 0, 60);
 	m_ListCheck.InsertColumn(1, _T("¥ÌŒÛ¿‡–Õ"), 0, 200);
 
-	CRect rcClient;
-	GetWindowRect(rcClient);
-	m_sizeMin.cx = rcClient.Width();
-	m_sizeMin.cy = rcClient.Height();
+	//CRect rcClient;
+	//GetWindowRect(rcClient);
+	//m_sizeMin.cx = rcClient.Width();
+	//m_sizeMin.cy = rcClient.Height();
 
-	m_ListCheck.GetWindowRect(rcClient);
-	m_sizeList.cx = rcClient.Width();
-	m_sizeList.cy = rcClient.Height();
+	//m_ListCheck.GetWindowRect(rcClient);
+	//m_sizeList.cx = rcClient.Width();
+	//m_sizeList.cy = rcClient.Height();
 
 	return TRUE;
 }
@@ -281,9 +281,9 @@ void CCheckValidDlg::OnSize(UINT nType, int cx, int cy)
 		CRect rcWnd;
 		GetWindowRect(rcWnd);
 
-		m_ListCheck.SetWindowPos(&wndTop, 0, 0,
-			(m_sizeList.cx + rcWnd.Width() - m_sizeMin.cx),
-			(m_sizeList.cy + rcWnd.Height() - m_sizeMin.cy),
-			SWP_NOMOVE|SWP_NOZORDER);
+		//m_ListCheck.SetWindowPos(&wndTop, 0, 0,
+		//	(m_sizeList.cx + rcWnd.Width() - m_sizeMin.cx),
+		//	(m_sizeList.cy + rcWnd.Height() - m_sizeMin.cy),
+		//	SWP_NOMOVE|SWP_NOZORDER);
 	}
 }

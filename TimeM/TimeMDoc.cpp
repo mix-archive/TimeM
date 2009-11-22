@@ -1403,6 +1403,7 @@ void CTimeMDoc::InsertPreTrans(PTITLE_UNIT pUnit)
 {
 	CString strChsInsert;
 	strChsInsert.LoadString(IDS_CHSTITLEDEFAULT);
+//strChsInsert=_T("\r\n");
 	pUnit->content.Insert(0, strChsInsert);
 }
 
@@ -1422,7 +1423,7 @@ void CTimeMDoc::PreProcessCC()
 			continue;
 		}
 
-		if(pUnit->content.GetLength() > 60)
+		if(pUnit->content.GetLength() > 65)
 		{
 			PTITLE_UNIT pUnitNew = new TITLE_UNIT;
 			InitializeUnit(pUnitNew);
@@ -1568,7 +1569,7 @@ void CTimeMDoc::OnEditSelectAll()
 void CTimeMDoc::OnEditCopy()
 {
 	HGLOBAL hgblCopy;
-	LPTSTR lpstrData;
+	LPSTR lpstrData;
 	HWND hWndMain = AfxGetMainWnd()->GetSafeHwnd();
 
 	CTitleLView* pList = GetTitleView();
@@ -1590,16 +1591,19 @@ void CTimeMDoc::OnEditCopy()
 
 	int nLen = strAllSel.GetLength();
 
-		hgblCopy = ::GlobalAlloc(GHND, (nLen + 1)*sizeof(TCHAR));//GMEM_MOVEABLE
-		lpstrData = (LPTSTR)GlobalLock(hgblCopy);
+		hgblCopy = ::GlobalAlloc(GMEM_MOVEABLE, (nLen + 1)*sizeof(CHAR));//
+		lpstrData = (LPSTR)GlobalLock(hgblCopy);
+		CStringA  strAllSelA;
 	if(::OpenClipboard(hWndMain))//
 	{
-		CHAR buff[256]=("testestestest");
-		GlobalUnlock(hgblCopy);
-		CopyMemory(lpstrData, (LPCTSTR)strAllSel, nLen*sizeof(TCHAR));
-		lpstrData[nLen] = 0;
+		//CHAR buff[256]=("testestestest");
+		//GlobalUnlock(hgblCopy);
 		::EmptyClipboard();
-			CopyMemory(lpstrData, (LPCSTR)buff, nLen*sizeof(CHAR));
+		strAllSelA=(CStringA)strAllSel;
+		CopyMemory(lpstrData, (LPCSTR)strAllSelA, nLen*sizeof(CHAR));
+		lpstrData[nLen] = 0;
+		
+			//CopyMemory(lpstrData, (LPCSTR)buff, nLen*sizeof(CHAR));
 		::SetClipboardData(CF_TEXT, hgblCopy);
 		::CloseClipboard();
 	}
@@ -1612,7 +1616,7 @@ void CTimeMDoc::OnEditCut()
 	OnEditCopy();
 	OnTitleDelete();
 }
-
+typedef BOOL (CActionHelper::*FunMIDef)(int nPos, PTITLE_UNIT pUnit); 
 void CTimeMDoc::OnEditPaste()
 {
 	HGLOBAL		hgblCopy;
@@ -1621,7 +1625,10 @@ void CTimeMDoc::OnEditPaste()
 
 	if(!IsClipboardFormatAvailable(CF_TEXT))
 		return;
-
+//_asm
+//{
+//int 3;
+//}
 	if(OpenClipboard(hWndMain))//
 	{
 		m_Action.BeginRecordAction();
@@ -1642,23 +1649,47 @@ void CTimeMDoc::OnEditPaste()
 				CTitleFile::ProcessReverse(&bufRead);
 
 				PTITLE_UNIT pUnit;
+				
+				vector<PTITLE_UNIT> pvect;
+					if(nPastePos== -1)
+					{
+						nPastePos=0;
+					}
 				while((pUnit = CTitleFile::StepTitleUnit(&bufRead)) != NULL)
 				{
-					if(nPastePos != -1)
-					{
-						m_Action.Insert(nPastePos, pUnit);
-						nPastePos ++;
-					}
-					else
-					{
-						m_Action.PushBack(pUnit);
-					}
+		
+			pvect.push_back(pUnit);
 				}
 
-				GlobalLock(hgblCopy);
+					CTitleLView* pList = GetTitleView();
+int nselcount=pList->GetSelectedCount();
+FunMIDef funModifyoInsert;
+funModifyoInsert=&CActionHelper::Insert;
+				if(pvect.size()==nselcount&&nselcount>5)
+				{
+				funModifyoInsert=&CActionHelper::ModifyContent;
+POSITION posSel = pList->GetFirstSelectedItemPosition();
+	
+		nPastePos = pList->GetNextSelectedItem(posSel);
+				
+				}//ncucfÖ»¸´ÖÆÄÚÈÝ
+				
+					for(int i=0;i<pvect.size();i++)
+				{
+				
+				pUnit=pvect[i];
+				//	m_Action.(*funModifyoInsert)(nPastePos, pUnit);
+(m_Action.*funModifyoInsert)(nPastePos, pUnit);
+						nPastePos ++;
+				
+				}
+
+				
+
+				::GlobalLock(hgblCopy);
 			}
 		}
-		CloseClipboard();
+		::CloseClipboard();
 		m_Action.EndRecordAction();
 	}
 	SetModifiedFlagAutoSave();
@@ -3198,14 +3229,20 @@ void CTimeMDoc::OnFileSplitto()
 }
 void CTimeMDoc::OnUNSURESET()
 {
+	CTitleLView* pList = GetTitleView();
+POSITION posSel = pList->GetFirstSelectedItemPosition();
+	while(posSel)
+	{
+		int nSel = pList->GetNextSelectedItem(posSel);
+		PTITLE_UNIT pUnit = m_Action.GetItem(nSel, FALSE);
 
-		int nPos=GetCurrentPos();
-		if(nPos!=-1)
-		{
-PTITLE_UNIT pUnit = m_Action.GetItem(nPos);
 pUnit->IsTranSure=!pUnit->IsTranSure;
-UpdateRefWin();
-		}
+
+		
+		
+	}
+	
+	UpdateRefWin();	
 }
 void CTimeMDoc::OnOptionAutosave()
 {
