@@ -1577,6 +1577,8 @@ void CTimeMDoc::OnEditCopy()
 	CString strAllSel;
 	CString strItem;
 	POSITION posSel = pList->GetFirstSelectedItemPosition();
+	int ncount=pList->GetSelectedCount();
+	int ncount2=0;
 	while(posSel)
 	{
 		int nSel = pList->GetNextSelectedItem(posSel);
@@ -1585,21 +1587,25 @@ void CTimeMDoc::OnEditCopy()
 		strItem = CTitleHelper::FormatSRTString(nSel + 1, pUnit);
 
 		strAllSel += strItem;
+
+		ncount2++;
 	}
 	if(strAllSel.IsEmpty())
 		return;
 
-	int nLen = strAllSel.GetLength();
 
+	CStringA  strAllSelA;
+	strAllSelA=(CStringA)strAllSel;
+int nLen= strAllSelA.GetLength();
 		hgblCopy = ::GlobalAlloc(GMEM_MOVEABLE, (nLen + 1)*sizeof(CHAR));//
 		lpstrData = (LPSTR)GlobalLock(hgblCopy);
-		CStringA  strAllSelA;
+		
 	if(::OpenClipboard(hWndMain))//
 	{
 		//CHAR buff[256]=("testestestest");
 		//GlobalUnlock(hgblCopy);
 		::EmptyClipboard();
-		strAllSelA=(CStringA)strAllSel;
+	
 		CopyMemory(lpstrData, (LPCSTR)strAllSelA, nLen*sizeof(CHAR));
 		lpstrData[nLen] = 0;
 		
@@ -1647,7 +1653,8 @@ void CTimeMDoc::OnEditPaste()
 				bufRead.nUnicodeState = CTitleFile::TestUnicodeBuf(bufRead.bufFile, bufRead.dwBufSize);
 				CTitleFile::StepSignature(&bufRead);
 				CTitleFile::ProcessReverse(&bufRead);
-
+					
+		
 				PTITLE_UNIT pUnit;
 				
 				vector<PTITLE_UNIT> pvect;
