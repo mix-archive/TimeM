@@ -91,6 +91,8 @@
 #define IDS_CHKERRINFO6                 192
 #define IDS_CHKERRINFO7                 193
 #define IDS_CHKERRINFO8                 194
+#define IDS_CHKERRINFO9                 195
+
 #define IDR_THEME_MENU                  200
 #define IDR_MENU_CBLISTCONTEXT          201
 #define IDS_EDIT_MENU                   306
@@ -197,6 +199,8 @@
 #define IDC_CHECK8                      1057
 #define IDC_HK_CTRL                     1058
 #define IDC_EDIT5                       1058
+#define IDC_BUTTON9                     1058
+#define IDC_CHECK9                      1059
 #define IDC_EDIT_USEDCOMMAND            1061
 #define IDC_CHK_AUTOSAVE                1063
 #define IDC_LIST_FILEFMT                1064

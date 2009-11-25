@@ -41,6 +41,8 @@ protected:
 	CClrButton		m_cbtn6;
 	CClrButton		m_cbtn7;
 	CClrButton		m_cbtn8;
+	CClrButton		m_cbtn9;
+
 	CTitleTimeEdit	m_TimeMax;
 	CTitleTimeEdit	m_TimeMin;
 	int				m_nChsCntMax;

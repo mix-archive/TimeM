@@ -483,7 +483,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2009,3,21,101
+ FILEVERSION 2009,11,25,101
  PRODUCTVERSION 0,37,0,101
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -502,7 +502,7 @@ BEGIN
             VALUE "Comments", "作者:李洪义(Holly)"
             VALUE "CompanyName", "人人影视"
             VALUE "FileDescription", "人人影视工作人员内部工具"
-            VALUE "FileVersion", "2009, 11, 16, 101"
+            VALUE "FileVersion", "2009, 11, 25, 101"
             VALUE "InternalName", "TimeM.exe"
             VALUE "LegalCopyright", "人人影视网站及作者，保留所有权利。"
             VALUE "OriginalFilename", "TimeM.exe"
@@ -538,7 +538,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 397
         TOPMARGIN, 7
-        BOTTOMMARGIN, 162
+        BOTTOMMARGIN, 175
     END
 
     IDD_DLG_CMBN_DOC, DIALOG
@@ -754,13 +754,13 @@ BEGIN
     EDITTEXT        IDC_EDIT_CRTEXT,7,53,192,128,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | WS_VSCROLL
 END
 
-IDD_DLG_CHECKVALID DIALOGEX 0, 0, 404, 169
+IDD_DLG_CHECKVALID DIALOGEX 0, 0, 404, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "检查除错"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "检查项目",IDC_STATIC,7,7,199,137
+    GROUPBOX        "检查项目",IDC_STATIC,7,7,199,150
     CONTROL         "",IDC_BUTTON1,"Button",BS_OWNERDRAW | WS_TABSTOP,14,16,12,11
     CONTROL         "文字长度",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,17,101,10
     LTEXT           "中文字幕大于",IDC_STATIC,39,31,49,8
@@ -784,13 +784,15 @@ BEGIN
     CONTROL         "字幕行数超过",IDC_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,116,64,10
     EDITTEXT        IDC_EDIT4,95,115,18,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "行",IDC_STATIC,116,117,9,8
-    DEFPUSHBUTTON   "检查",IDOK,7,148,32,14
-    PUSHBUTTON      "选择所有结果行",IDC_BTN_SELALL,43,148,67,14
-    PUSHBUTTON      "自动消除重叠",IDC_BTN_CLEAROVERLAP,114,148,57,14
-    PUSHBUTTON      "关闭",IDCANCEL,174,148,32,14
-    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,212,7,185,155
+    DEFPUSHBUTTON   "检查",IDOK,7,161,32,14
+    PUSHBUTTON      "选择所有结果行",IDC_BTN_SELALL,43,161,67,14
+    PUSHBUTTON      "自动消除重叠",IDC_BTN_CLEAROVERLAP,114,161,57,14
+    PUSHBUTTON      "关闭",IDCANCEL,174,161,32,14
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,212,7,185,168
     CONTROL         "",IDC_BUTTON8,"Button",BS_OWNERDRAW | WS_TABSTOP,14,130,12,11
     CONTROL         "字幕中包含全角符号",IDC_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,131,88,10
+    CONTROL         "",IDC_BUTTON9,"Button",BS_OWNERDRAW | WS_TABSTOP,14,142,12,11
+    CONTROL         "中文字幕行包含英文字母",IDC_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,143,104,10
 END
 
 IDD_DLG_CMBN_DOC DIALOGEX 0, 0, 521, 353
@@ -1226,7 +1228,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.23"
+    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.25"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"
@@ -1365,6 +1367,7 @@ BEGIN
     IDS_CHKERRINFO6         "时间轴太短"
     IDS_CHKERRINFO7         "字幕行数过多"
     IDS_CHKERRINFO8         "字幕中有全角符号"
+    IDS_CHKERRINFO9         "中文字幕中有英文字母"
 END
 
 STRINGTABLE 

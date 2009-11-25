@@ -424,6 +424,50 @@ BOOL CTitleHelper::FindFullshapeFromRow(const CString& strSentence)//ncucf
 	}
 	return false;
 }
+void CTitleHelper::IsDuplication(CString& strSentence)
+{
+	vector<CString> ename;
+	CString tpname;
+	int lastpos=0;
+	int pos=0;
+while(1)
+{
+lastpos=strSentence.Find(_T(" "),pos+1);
+if(lastpos==-1)
+{
+	tpname=strSentence.Mid(pos);
+tpname.Trim();
+ename.push_back(tpname);	
+	break;}
+tpname=strSentence.Mid(pos,lastpos-pos);
+tpname.Trim();
+ename.push_back(tpname);
+
+pos=lastpos;
+
+}
+if(ename.size()==2)
+{
+if(ename[0]==ename[1])
+{
+strSentence=ename[0];
+return;
+}
+
+}
+if(ename.size()==3)
+{
+if(ename[0]==ename[1]&&ename[2]==ename[1])
+{
+strSentence=ename[0];
+return;
+}
+
+}
+
+
+
+}
 BOOL CTitleHelper::GetEngNameFromRow(const CString& strSentence,CStr2KeepMap& engnameset)//ncucf
 {
 	CString ChiRow;
@@ -450,14 +494,24 @@ else
 
 	tpname.TrimRight(_T("-"));
 	tpname.Trim();
-	if(tpname.GetLength()>1&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
-	{
 
+	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
+	{
+if(tpname.GetLength()>1)
+{
 tpname.MakeLower();
 		CTitleHelper::UpSpecialnoun(tpname);
+	IsDuplication(tpname);//删除重复项
 engnameset[tpname]=tpname;//说明是英文名
+}
+else
+{
+
+}
 rtflag=true;
 	}
+	
+
 tpname=_T("");//清空，为保存下一个英文名做准备
 
 }

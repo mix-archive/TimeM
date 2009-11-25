@@ -2367,7 +2367,7 @@ break;
 file1.Close();
 		}
 mykeepmap.sort();
-for(int it=0;it<mykeepmap.m_mapstr.size();++it)
+for(int it=mykeepmap.m_mapstr.size()-1;it>=0;it--)
 {
 
 	EditReplace(mykeepmap.m_mapstr[it],
@@ -2584,6 +2584,9 @@ BOOL CTimeMDoc::ChkEngInChineseRow()//ncucf
 			if(CTitleHelper::GetEngNameFromRow(pUnit->content,engnameset))
 			{
 				IsexistEngInC=true;
+				chkParam.nErrType = 9;
+				chkParam.nTitleId = iItem;
+				m_mapChkParams.insert(make_pair(iItem, chkParam));
 			
 			}
 		}
@@ -2605,6 +2608,7 @@ break;
 if(rdflag==false)
 break;
 CTitleHelper::UpSpecialnoun(strsource);
+
 engnameset[strsource]=strdestination;
 
 						rdflag=file1.ReadString(strsource);

@@ -115,9 +115,18 @@ COLORREF CTitleLView::OnGetCellBkColor(int nRow, int nCol)
 	{
 		CTimeMDoc* pDoc = GetDocument();
 		if((pDoc != NULL)&&(pDoc->HasMark(nRow)))
-			return RGB(255, 128, 0);
+		{
 
-		return GetSysColor(COLOR_SCROLLBAR);
+return RGB(255, 128, 0);
+		}	
+
+		PTITLE_UNIT pUnit = pDoc->GetTitleItem(nRow);		
+			
+			if(pUnit->IsTranSure==0)
+return RGB(255, 0, 0);
+			else
+return GetSysColor(COLOR_SCROLLBAR);
+
 	}
 	if((m_nEditRow == nRow)
 		&&(m_nEditCol == nCol))

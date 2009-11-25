@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CCheckValidDlg, CDialog)
 
 CCheckValidDlg::CCheckValidDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CCheckValidDlg::IDD, pParent)
-	, m_nChsCntMax(18)
+	, m_nChsCntMax(20)
 	, m_nTitleLineCnt(2)
 	, m_strMaxTime(_T("00:00:05,000"))
 	, m_strMinTime(_T("00:00:00,500"))
@@ -37,6 +37,8 @@ void CCheckValidDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON6, m_cbtn6);
 	DDX_Control(pDX, IDC_BUTTON7, m_cbtn7);
 	DDX_Control(pDX, IDC_BUTTON8, m_cbtn8);
+	DDX_Control(pDX, IDC_BUTTON9, m_cbtn9);
+
 	DDX_Control(pDX, IDC_EDIT2, m_TimeMax);
 	DDX_Control(pDX, IDC_EDIT3, m_TimeMin);
 	DDX_Text(pDX, IDC_EDIT1, m_nChsCntMax);
@@ -70,6 +72,8 @@ BOOL CCheckValidDlg::OnInitDialog()
 	m_cbtn6.SetColor(RGB(255, 128, 128));
 	m_cbtn7.SetColor(RGB(64, 128, 128));
 	m_cbtn8.SetColor(RGB(128, 255, 128));
+	m_cbtn9.SetColor(RGB(128, 128, 128));
+
 	CheckDlgButton(IDC_CHECK1, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK2, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK3, BST_CHECKED);
@@ -78,6 +82,8 @@ BOOL CCheckValidDlg::OnInitDialog()
 	CheckDlgButton(IDC_CHECK6, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK7, BST_CHECKED);
 	CheckDlgButton(IDC_CHECK8, BST_CHECKED);
+	CheckDlgButton(IDC_CHECK9, BST_CHECKED);
+
 	m_ListCheck.InsertColumn(0, _T("´íÎóÐÐºÅ"), 0, 60);
 	m_ListCheck.InsertColumn(1, _T("´íÎóÀàÐÍ"), 0, 200);
 
@@ -127,17 +133,23 @@ void CCheckValidDlg::OnBnClickedOk()
 	{
 		m_pDoc->ChkTitleLineMoreThan(m_nTitleLineCnt);
 	}
-	
+
+
 	if(IsDlgButtonChecked(IDC_CHECK8))
 	{
 		m_pDoc->ChkFullShapeInChineseRow();
 	}
 
+		if(IsDlgButtonChecked(IDC_CHECK9))
+	{
+		m_pDoc->ChkEngInChineseRow();
+	}
 	MAP_CHKPARAMS::iterator iterChk;
 	for(iterChk = m_pDoc->m_mapChkParams.begin(); iterChk != m_pDoc->m_mapChkParams.end(); iterChk ++)
 	{
 		m_pDoc->m_vtChkParams.push_back(iterChk->second);
 	}
+
 	m_ListCheck.SetItemCount(m_pDoc->m_vtChkParams.size());
 
 }
@@ -213,6 +225,10 @@ void CCheckValidDlg::OnLvnGetdispinfoList1(NMHDR *pNMHDR, LRESULT *pResult)
 			case 8:
 				strInfo.LoadString(IDS_CHKERRINFO8);
 				break;
+			case 9:
+				strInfo.LoadString(IDS_CHKERRINFO9);
+				break;
+
 			}
 			StringCbCopy(pDispInfo->item.pszText, pDispInfo->item.cchTextMax, strInfo);
 			break;
