@@ -852,8 +852,8 @@ void CTimeMDoc::OnTitleBreakbyuser()
 	
 	vtTitles[iBreak]->content.TrimLeft(_T("- "));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 		vtTitles[iBreak]->content.TrimLeft(_T("-"));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
-		vtTitles[iBreak]->content.Replace(_T("\n- "),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
-		vtTitles[iBreak]->content.Replace(_T("\n-"),_T(""));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+		vtTitles[iBreak]->content.Replace(_T("\n- "),_T("\n"));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
+		vtTitles[iBreak]->content.Replace(_T("\n-"),_T("\n"));//如果拆分成两行后，则去掉为了区分两个人说话的- ncucf
 	
 	
 	}
