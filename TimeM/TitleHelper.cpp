@@ -437,10 +437,12 @@ if(lastpos==-1)
 {
 	tpname=strSentence.Mid(pos);
 tpname.Trim();
+if(tpname.GetLength()>0)
 ename.push_back(tpname);	
 	break;}
 tpname=strSentence.Mid(pos,lastpos-pos);
 tpname.Trim();
+if(tpname.GetLength()>0)
 ename.push_back(tpname);
 
 pos=lastpos;
