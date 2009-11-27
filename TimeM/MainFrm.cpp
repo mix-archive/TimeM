@@ -10,7 +10,7 @@
 #include "MultiReplaceDlg.h"
 #include "TitleOptions.h"
 #include "SaveOptionPage.h"
-
+extern LPCTSTR complete_path(LPCTSTR filename);
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_VIEW_TASKPANE, &CMainFrame::OnViewTaskpane)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_TASKPANE, &CMainFrame::OnUpdateViewTaskpane)
 	ON_COMMAND_RANGE(ID_SUBTITLE_REL1, ID_HELP_LESSON, &CMainFrame::OnSubTitleWeb)
+	ON_COMMAND(ID_UPDATENEW,  &CMainFrame::OnUpdateNew)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -486,5 +487,107 @@ void CMainFrame::OnSubTitleWeb(UINT nCmdID)
 	strUrl.LoadString(nCmdID);
 	if(!strUrl.IsEmpty())
 		::ShellExecute(NULL, NULL, _T("iexplore"), strUrl, NULL, SW_SHOW);
+}
+void CMainFrame::OnUpdateNew()
+{
+CHttpFile* pFile;
+  CInternetSession session; 
+  
+   CHttpConnection* pConnection;
+ CString hostname=_T("www.yyets.com");
+ CString timemfile=_T("http://www.yyets.com/timem/time_machine.zip");
+ int m_myport=80;
+ CReadAUStdioFile filesave;	
+CString tempnamebuf,upfilename,oldlog,newlog;
+upfilename=_T("更新日志.txt");
+TCHAR szbuf[1024];
+BOOL nLen=0;
+if(!filesave.Open(complete_path(upfilename),CFile::modeCreate|CFile::modeNoTruncate|CFile::modeReadWrite))
+{
+	MessageBox(_T("创建文件失败"),_T("几乎是不可能事件！"),0);
+		return;
+
+}
+	while(nLen=filesave.Read(szbuf,1024))
+	{
+		szbuf[nLen/sizeof(TCHAR)]=0;
+		oldlog+=szbuf;
+	}
+
+	try{
+	
+
+pConnection =  session.GetHttpConnection(hostname,m_myport,(LPCTSTR)0,0); 
+
+tempnamebuf.Format(_T("/timem/%s"),upfilename);
+
+CString strHeaders,strFormData;
+
+strHeaders.Format(_T("%s%s"),_T("Content-Type: text/plain;charset=UNICODE\r\nReferer: http://"),hostname);
+
+pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_GET,tempnamebuf); 
+ BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)strFormData, strFormData.GetLength()); 
+DWORD dwStatusCode = 0;
+
+ pFile->QueryInfoStatusCode(dwStatusCode);
+            if (dwStatusCode != 200)
+            {
+                pFile->Close();
+                session.Close();
+   pConnection->Close();
+     delete pFile;
+        delete pConnection;
+MessageBox(_T("打开更新日志文件失败"),_T("请确保网络连接正常，或者稍后重试！"),0);
+		return;
+            }
+
+CString szBuffer;
+
+
+
+
+
+while(nLen=pFile->Read(szbuf,1024))
+{
+	szbuf[nLen/sizeof(TCHAR)]=0;
+		newlog+=szbuf;
+
+}
+oldlog.Trim();
+newlog.Trim();
+
+}
+
+catch(...)
+{
+MessageBox(_T("打开更新日志文件失败"),_T("请确保网络连接正常，或者稍后重试！"),0);
+}
+
+
+
+pFile->Close();
+  session.Close();
+   pConnection->Close();
+     delete pFile;
+        delete pConnection;
+if(newlog.GetLength()>oldlog.GetLength())
+{
+CString newprompt=newlog.Mid(oldlog.GetLength());	
+if(IDOK==MessageBox(newprompt,_T("发现新版本，请确认是否下载"),MB_OKCANCEL))
+{
+filesave.SetLength(0);
+filesave.WriteString(newlog);
+filesave.WriteString(_T("\r\n"));
+filesave.Close();
+
+ShellExecute(NULL,NULL,_T("explorer"),timemfile,NULL,1);
+}
+}
+else
+{
+MessageBox(_T("你当前版本已经是最新版！"),timemfile,0);
+
+}
+
 }
 

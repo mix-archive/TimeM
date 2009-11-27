@@ -40,7 +40,7 @@
 
 
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
-
+#include <afxinet.h>
 #include <shlwapi.h>
 
 #include <vector>

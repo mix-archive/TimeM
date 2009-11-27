@@ -17,6 +17,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
@@ -54,4 +55,10 @@ HBRUSH CAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	// TODO:  Return a different brush if the default is not desired
 	return hbr;
+}
+
+void CAboutDlg::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	OnOK();
 }

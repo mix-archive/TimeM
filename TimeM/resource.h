@@ -334,6 +334,7 @@
 #define ID_HELP_UPLOAD                  32984
 #define ID_HELP_HOME                    32985
 #define ID_HELP_LESSON                  32986
+#define ID_UPDATENEW                    32987
 #define ID_FILE_SPLITTO                 32988
 #define ID_OPTION_AUTOSAVE              32990
 #define ID_UNSURE_SET                   32991
@@ -344,7 +345,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32798
+#define _APS_NEXT_COMMAND_VALUE         32799
 #define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           313
 #endif

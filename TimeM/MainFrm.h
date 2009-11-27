@@ -69,6 +69,7 @@ public:
 	afx_msg void OnViewTaskpane();
 	afx_msg void OnUpdateViewTaskpane(CCmdUI *pCmdUI);
 	afx_msg void OnSubTitleWeb(UINT nID);
+	void CMainFrame::OnUpdateNew();
 };
 
 
