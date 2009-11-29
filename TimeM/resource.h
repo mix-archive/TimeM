@@ -92,7 +92,6 @@
 #define IDS_CHKERRINFO7                 193
 #define IDS_CHKERRINFO8                 194
 #define IDS_CHKERRINFO9                 195
-
 #define IDR_THEME_MENU                  200
 #define IDR_MENU_CBLISTCONTEXT          201
 #define IDS_EDIT_MENU                   306
@@ -258,6 +257,8 @@
 #define ID_32795                        32795
 #define ID_                             32796
 #define ID_32797                        32797
+#define ID_32799                        32799
+#define ID_FINDUNSURE                   32800
 #define ID_FILE_IMPORT                  32827
 #define ID_FILE_APPEND                  32828
 #define ID_FILE_EXPORT                  32829
@@ -345,7 +346,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32799
+#define _APS_NEXT_COMMAND_VALUE         32801
 #define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           313
 #endif

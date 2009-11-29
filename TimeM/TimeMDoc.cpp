@@ -121,7 +121,7 @@ BEGIN_MESSAGE_MAP(CTimeMDoc, CDocument)
 	ON_COMMAND(ID_TOOL_CHECK, &CTimeMDoc::OnToolCheck)
 	ON_COMMAND(ID_32794, &CTimeMDoc::OnCreateNamelist)
 	ON_COMMAND(ID_32795, &CTimeMDoc::OnImplementNamelist)
-
+ON_COMMAND(ID_FINDUNSURE, &OnUnsureFind)
 	ON_COMMAND(ID_FILE_EXPORT, &CTimeMDoc::OnFileExport)
 	ON_COMMAND(ID_TITLE_AUTOSNAP, &CTimeMDoc::OnTitleAutosnap)
 	ON_COMMAND(ID_TITLE_SNAPNEXT, &CTimeMDoc::OnTitleSnapnext)
@@ -240,6 +240,9 @@ void CTimeMDoc::Serialize(CArchive& ar)
 			dwFmt = FMTFLAG_ASS;
 			strFmtHdr = m_strFmtHeader.IsEmpty()?CTitleParams::GetDefASSHeader():m_strFmtHeader;
 		}
+OnEditSortstart();
+OnEditSortstart();
+OnEditSortstart();
 		if(CTitleFile::WriteTitleFile(pFile, m_Action.GetVtTitle(), strFmtHdr, m_strPreCode, m_strPostCode, dwFmt, m_bUnicode))
 			DeleteFile(GetAutoSaveFile(GetPathName()));
 	}
@@ -1760,6 +1763,17 @@ void CTimeMDoc::OnEditFind()
 		}
 	}
 }
+void CTimeMDoc::OnUnsureFind()
+{
+	int nRet;
+	
+		if(nRet != -1)
+		{
+			SetCurrentPos(nRet);
+			UpdateRefWin();
+		}
+	
+}
 
 void CTimeMDoc::EditReplace(const CString& strTarget, const CString& strResult,
 							BOOL bCase, BOOL bEng, BOOL bChs, BOOL bSelected)
@@ -2150,9 +2164,9 @@ void CTimeMDoc::SortChanged(int nCol, BOOL bAscending)
 			case 6:
 				CString strItem;
 				
-				//int nCnt = CTitleHelper::CountTitleLine(pUnit->content, strItem);
-				//mapIntSort.insert(make_pair(nCnt, iItem));
-mapIntSort.insert(make_pair(pUnit->IsTranSure, iItem));
+				int nCnt = CTitleHelper::CountTitleLine(pUnit->content, strItem);
+				mapIntSort.insert(make_pair(nCnt, iItem));
+//mapIntSort.insert(make_pair(pUnit->IsTranSure, iItem));
 				break;
 			}
 		}
@@ -2293,7 +2307,32 @@ int CTimeMDoc::LocateNextMarkItem()
 
 void CTimeMDoc::OnEditMark()
 {
-	MarkItem(GetCurrentPos());
+		CTitleLView* pList = GetTitleView();
+POSITION posSel = pList->GetFirstSelectedItemPosition();
+	while(posSel)
+	{
+		int nSel = pList->GetNextSelectedItem(posSel);
+		PTITLE_UNIT pUnit = m_Action.GetItem(nSel, FALSE);
+
+if(pUnit != NULL)
+	{
+		if((pUnit->dwFlags & FLAG_MARKMASK) == FLAG_TITLEMARK1)
+		{
+			pUnit->dwFlags &= FLAG_MARKCLEAR;
+		}
+		else
+		{
+			pUnit->dwFlags &= FLAG_MARKCLEAR;
+			pUnit->dwFlags |= FLAG_TITLEMARK1;
+		}
+	}
+
+
+		
+		
+	}
+		UpdateRefWin();
+
 }
 
 void CTimeMDoc::OnEditGotomark()

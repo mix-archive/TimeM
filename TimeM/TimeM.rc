@@ -114,7 +114,7 @@ BEGIN
     BUTTON      ID_TITLE_MULTIINSERT
     SEPARATOR
     BUTTON      ID_OPTION_AUTOSAVE
-    BUTTON      ID_UNSURE_SET
+    BUTTON      ID_EDIT_MARK
     BUTTON      ID_HIDE_ASSCODE
 END
 
@@ -347,7 +347,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "上一行\tCtrl+PageUp",            ID_TITLE_PREVLINE
         MENUITEM "下一行\tCtrl+PageDn",            ID_TITLE_NEXTLINE
-        MENUITEM "设此行为待定行",                     ID_UNSURE_SET
     END
     POPUP "工具(&T)"
     BEGIN
@@ -422,6 +421,7 @@ BEGIN
         MENUITEM "意见反馈",                        ID_HELP_UPLOAD
         MENUITEM SEPARATOR
         MENUITEM "使用教程(&L)",                    ID_HELP_LESSON
+        MENUITEM "检查更新",                        ID_UPDATENEW
         MENUITEM SEPARATOR
         MENUITEM "关于 Time Machine(&A)...",      ID_APP_ABOUT
     END
@@ -1228,7 +1228,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.25"
+    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.29"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"
@@ -1393,7 +1393,7 @@ BEGIN
     IDS_AUTOSAVEREADERROR   "打开自动保存文件遇到了错误，仍然为您尝试打开您选择的文件！"
     IDS_SAVESTDTIPS         "时间轴已经修改，需要先保存再继续吗？\r\n选择是保存，选择否放弃修改，选择取消放弃当前动作！"
     IDS_SAVETRANSTIPS       "翻译稿已经修改，需要保存再继续吗？\r\n选择是保存，选择否放弃修改，选择取消放弃当前动作！"
-    IDS_COL_TITLE_LINENUM   "准确"
+    IDS_COL_TITLE_LINENUM   "行数"
     IDS_OUTPUT_WND          "字幕编辑窗口"
     IDS_PROPERTIES_WND      "视频播放"
 END
@@ -1422,6 +1422,7 @@ BEGIN
     ID_HELP_UPLOAD          "http://www.yyets.net/forum-545-1.html"
     ID_HELP_HOME            "http://www.yyets.net/"
     ID_HELP_LESSON          "http://www.yyets.net/forum-545-1.html"
+    ID_UPDATENEW            "检查新版本是否存在"
     ID_FILE_SPLITTO         "将当前文件平均分割保存\n分割另存"
     ID_OPTION_AUTOSAVE      "编辑操作自动保存\n自动保存所做的修改"
     ID_UNSURE_SET           "有待确定\n当前行翻译准确性"

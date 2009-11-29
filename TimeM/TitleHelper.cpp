@@ -246,7 +246,7 @@ CString	CTitleHelper::FormatSRTString(int nSeqNo, PTITLE_UNIT pUnit)
 {
 	CString strItem;
 
-		nSeqNo+=(!pUnit->IsTranSure)*10000;//ncucf
+		nSeqNo+=((pUnit->dwFlags & FLAG_MARKMASK) == FLAG_TITLEMARK1)*10000;//ncucf
 	strItem.Format(_T("%d\r\n%s --> %s\r\n%s\r\n"),
 		nSeqNo,
 		CTitleHelper::FormatTime(pUnit->nStart),

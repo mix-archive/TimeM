@@ -70,7 +70,10 @@ memcpy(bufstar,(const char*)pnumber,sizeof(CHAR)*7);
 bufstar[7]=0;
 if(atoi(bufstar)/10000==1)
 {
-pUnit->IsTranSure=0;//ncucf
+
+	pUnit->dwFlags &= FLAG_MARKCLEAR;
+			pUnit->dwFlags |= FLAG_TITLEMARK1;
+//pUnit->IsTranSure=0;//ncucf
 }
 
 				WCHAR szWTime[16];
@@ -543,6 +546,7 @@ PTITLE_UNIT CTitleFile::StepTitleUnit(PBUF_READ pReadData)
 	{
 	case FMTFLAG_SRT:
 	case FMTFLAG_UNKNOWN:
+		pUnit->dwFlags	= 0;
 		while(pReadData->dwBufOffset < pReadData->dwBufSize)
 		{
 			if(CTitleFile::ReadSubStart(pReadData, pUnit))
@@ -554,7 +558,7 @@ PTITLE_UNIT CTitleFile::StepTitleUnit(PBUF_READ pReadData)
 			if(CTitleFile::ReadSubEnd(pReadData, pUnit)&&
 				CTitleFile::ReadSubTitle(pReadData, pUnit))
 			{
-				pUnit->dwFlags	= 0;
+				
 				return pUnit;
 			}
 		}

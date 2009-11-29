@@ -226,6 +226,7 @@ public:
 	afx_msg void OnEditCut();
 	afx_msg void OnEditPaste();
 	afx_msg void OnEditFind();
+	afx_msg void OnUnsureFind();
 	afx_msg void OnEditReplace();
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditFindnext();

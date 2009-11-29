@@ -176,9 +176,9 @@ void CTitleLView::GetItemText(int nItem, int nCol, CString& strItem)
 				strItem = strContent;
 				if(m_bHideAssCode)
 					CTitleHelper::RemoveAssCode(strItem);
-				//int nCnt = CTitleHelper::CountTitleLine(strItem, strItem);
-				
-				strItem.Format(_T("%d"), pUnit->IsTranSure);
+				int nCnt = CTitleHelper::CountTitleLine(strItem, strItem);
+				strItem.Format(_T("%d"), nCnt);
+				//strItem.Format(_T("%d"), pUnit->IsTranSure);ncucf，改回统计行数
 				break;
 			}
 		}

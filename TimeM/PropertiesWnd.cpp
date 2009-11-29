@@ -48,7 +48,7 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_COMMAND(ID_TITLE_INSERT, &CPropertiesWnd::OnTitleInsert)
 	ON_COMMAND(ID_TITLE_MULTIINSERT, &CPropertiesWnd::OnTitleMultiinsert)
 	ON_COMMAND(ID_OPTION_AUTOSAVE, &CPropertiesWnd::OnOptionAutosave)
-	ON_COMMAND(ID_UNSURE_SET, &CPropertiesWnd::OnUNSURESET)
+	ON_COMMAND(ID_EDIT_MARK, &CPropertiesWnd::OnUNSURESET)
 		
 	ON_UPDATE_COMMAND_UI(ID_OPTION_AUTOSAVE, &CPropertiesWnd::OnUpdateOptionAutosave)
 	ON_UPDATE_COMMAND_UI(ID_VIDEO_SYNCTITLE, &CPropertiesWnd::OnUpdateVideoSynctitle)
@@ -554,7 +554,7 @@ void CPropertiesWnd::OnUNSURESET()
 		{
 			CTimeMDoc* pDoc = (CTimeMDoc*)pDocTmpl->GetNextDoc(posDoc);
 			if(NULL != pDoc)
-				pDoc->OnUNSURESET();
+				pDoc->OnEditMark();
 		}
 	}
 }
