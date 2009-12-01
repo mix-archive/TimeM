@@ -109,7 +109,9 @@ memcpy(bufstar,pnumber,sizeof(WCHAR)*7);
 bufstar[7]=0;
 if(_wtoi(bufstar)/10000==1)
 {
-pUnit->IsTranSure=0;//ncucf
+		pUnit->dwFlags &= FLAG_MARKCLEAR;
+			pUnit->dwFlags |= FLAG_TITLEMARK1;
+//pUnit->IsTranSure=0;//ncucf
 }
 				
 				pUnit->nStart = CTitleHelper::GetTimeValue(CString(szTime));

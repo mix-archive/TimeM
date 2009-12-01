@@ -583,7 +583,7 @@ filesave.WriteString(newlog);
 filesave.WriteString(_T("\r\n"));
 filesave.Close();
 
-ShellExecute(NULL,NULL,_T("explorer"),timemfile,NULL,1);
+ShellExecute(NULL,NULL,_T("iexplore"),timemfile,NULL,1);
 }
 }
 else
