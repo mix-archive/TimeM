@@ -89,7 +89,7 @@ public:
 	BOOL	OpenTransFile(CFile* pFile);
 	BOOL	QuerySplitOption();
 
-	BOOL	OpenAppendFile(CFile* pFile);
+	BOOL	OpenAppendFile(vector<CFile*>& MultVectFile);
 
 	void	InsertTitle(int nPos, const CString& strStart, const CString& strEnd, const CString& strTitle);
 	void	InsertOneTitle(int nPos, LPCTSTR lpszTitle, int nTimeLen);

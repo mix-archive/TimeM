@@ -426,6 +426,7 @@ BOOL CTitleHelper::FindFullshapeFromRow(const CString& strSentence)//ncucf
 }
 void CTitleHelper::IsDuplication(CString& strSentence)
 {
+	
 	vector<CString> ename;
 	CString tpname;
 	int lastpos=0;
@@ -496,7 +497,7 @@ else
 
 	tpname.TrimRight(_T("-"));
 	tpname.Trim();
-
+tpname.TrimRight(_T("..."));
 	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
 	{
 if(tpname.GetLength()>1)
@@ -504,6 +505,7 @@ if(tpname.GetLength()>1)
 tpname.MakeLower();
 		CTitleHelper::UpSpecialnoun(tpname);
 	IsDuplication(tpname);//删除重复项
+
 engnameset[tpname]=tpname;//说明是英文名
 }
 else

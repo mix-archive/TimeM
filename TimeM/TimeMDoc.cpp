@@ -240,8 +240,7 @@ void CTimeMDoc::Serialize(CArchive& ar)
 			dwFmt = FMTFLAG_ASS;
 			strFmtHdr = m_strFmtHeader.IsEmpty()?CTitleParams::GetDefASSHeader():m_strFmtHeader;
 		}
-OnEditSortstart();
-OnEditSortstart();
+OnEditSortend();
 OnEditSortstart();
 		if(CTitleFile::WriteTitleFile(pFile, m_Action.GetVtTitle(), strFmtHdr, m_strPreCode, m_strPostCode, dwFmt, m_bUnicode))
 			DeleteFile(GetAutoSaveFile(GetPathName()));
@@ -574,21 +573,30 @@ BOOL CTimeMDoc::QuerySplitOption()
 	}
 	return FALSE;
 }
+struct DeletePObject
+{ 
+	template<typename T>
+	void operator()(const T* ptr) const { delete ptr; }
+}_DeletePObject;
 
 void CTimeMDoc::OnFileAppend()
 {
-	CFile	fileAppend;
-	if(OpenAppendFile(&fileAppend))
-	{
-		WriteLogLine(_T("CTimeMDoc::OnFileAppend()\r\n"));
+	//CFile	fileAppend;
+	vector<CFile*> MultVectFile;
+	OpenAppendFile(MultVectFile);
+		
 		m_Action.BeginRecordAction();
+for(int i=0;i<MultVectFile.size();i++)
+{
+		WriteLogLine(_T("CTimeMDoc::OnFileAppend()\r\n"));
+	
 		BUF_READ rbData;
-		CString strExt = PathFindExtension(fileAppend.GetFileName());
+		CString strExt = PathFindExtension(MultVectFile[i]->GetFileName());
 		try
 		{
-			if(CTitleFile::PrepareRead(&rbData, &fileAppend))
+			if(CTitleFile::PrepareRead(&rbData, MultVectFile[i]))
 			{
-				CTitleFile::FillBuffer(&rbData, &fileAppend);
+				CTitleFile::FillBuffer(&rbData, MultVectFile[i]);
 				rbData.nUnicodeState = CTitleFile::TestUnicodeBuf(rbData.bufFile, rbData.dwBufSize);
 				CTitleFile::StepSignature(&rbData);
 				CTitleFile::ProcessReverse(&rbData);
@@ -653,22 +661,55 @@ void CTimeMDoc::OnFileAppend()
 		}
 		CTitleFile::ClearReadBuf(&rbData);
 
-		m_Action.EndRecordAction();
+	
+	}
+m_Action.EndRecordAction();
 		SetModifiedFlagAutoSave();
 		UpdateRefWin();
-	}
+		
+	for_each(MultVectFile.begin(), MultVectFile.end(), DeletePObject()); 
+
 }
 
-BOOL CTimeMDoc::OpenAppendFile(CFile* pFile)
+BOOL CTimeMDoc::OpenAppendFile(vector<CFile*>& MultVectFile)
 {
 	TCHAR szFilter[] = _T("×ÖÄ»ÎÄ¼þ (*.srt;*.ass;*.ssa)|*.srt;*.ass;*.ssa|All Files (*.*)|*.*||");
 
-	CFileDialog dlgImportFile(TRUE, NULL, NULL, OFN_FILEMUSTEXIST, szFilter);
-	if(dlgImportFile.DoModal() == IDOK)
-	{
-		return pFile->Open(dlgImportFile.GetPathName(), CFile::modeRead);
-	}
+
+CString strFileName;
+CFile* pTempFile;
+	CFileDialog dlg( TRUE, NULL, NULL, OFN_ALLOWMULTISELECT, szFilter);
+DWORD MAXFILE = 2412; // allocate enough memory space
+dlg.m_ofn.nMaxFile = MAXFILE; // set the buffer size
+TCHAR* buf = new TCHAR[MAXFILE];
+dlg.m_ofn.lpstrFile = buf;
+buf[0]=0;
+int iReturn = dlg.DoModal();
+if(iReturn == IDOK)
+{
+POSITION pos = dlg.GetStartPosition();
+while (pos != NULL)
+{
+
+strFileName=dlg.GetNextPathName(pos); // get the individual file name
+pTempFile=new CFile;
+if(pTempFile->Open(strFileName, CFile::modeRead))
+{
+MultVectFile.push_back(pTempFile);
+}
+else
+{
 	return FALSE;
+}
+
+}
+
+}
+
+
+delete [] buf;
+
+	return true;
 }
 
 void CTimeMDoc::OnTitleMultiinsert()

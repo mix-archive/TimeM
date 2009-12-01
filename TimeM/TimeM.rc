@@ -1228,7 +1228,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "Time Machine modified by 晨风 2009.11.29"
+    IDR_MAINFRAME           "Time Machine modified by 晨风 请点帮助菜单中的‘检查更新’获取最新版本"
     IDS_NOZIPSET            "没有指定压缩工具所在路径，现在设置吗？\r\n选择是进行设置，选择否放弃压缩，选择取消放弃导出！"
     IDR_TimeMTYPE           "Time Machine\n\nTime Machine\nTime Machine Files (*.srt,*.ass,*.ssa)\n.srt;.ass;.ssa\nTimeM.Document\nTimeM.Document"
     IDS_POS_COLNAME         "位置"

@@ -553,6 +553,9 @@ while(nLen=pFile->Read(szbuf,1024))
 		newlog+=szbuf;
 
 }
+TCHAR rplchr=0xfeff;
+oldlog.Trim(rplchr);
+newlog.Trim(rplchr);
 oldlog.Trim();
 newlog.Trim();
 
