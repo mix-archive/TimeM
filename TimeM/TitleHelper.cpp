@@ -495,8 +495,9 @@ tpname.AppendChar(ChiRow[i]);
 else
 {
 
-	tpname.TrimRight(_T("-"));
+	tpname.Trim(_T("-"));
 	tpname.Trim();
+	tpname.Trim(_T("-"));
 tpname.TrimRight(_T("..."));
 	if(tpname.GetLength()>0&&tpname[0]!='.'&&tpname[0]!='&'&&tpname[0]!='-')
 	{
