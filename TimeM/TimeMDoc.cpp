@@ -240,8 +240,8 @@ void CTimeMDoc::Serialize(CArchive& ar)
 			dwFmt = FMTFLAG_ASS;
 			strFmtHdr = m_strFmtHeader.IsEmpty()?CTitleParams::GetDefASSHeader():m_strFmtHeader;
 		}
-OnEditSortend();
-OnEditSortstart();
+//OnEditSortend();
+//OnEditSortstart();
 		if(CTitleFile::WriteTitleFile(pFile, m_Action.GetVtTitle(), strFmtHdr, m_strPreCode, m_strPostCode, dwFmt, m_bUnicode))
 			DeleteFile(GetAutoSaveFile(GetPathName()));
 	}
@@ -2348,6 +2348,8 @@ int CTimeMDoc::LocateNextMarkItem()
 
 void CTimeMDoc::OnEditMark()
 {
+if(!m_bUseSync)
+{
 		CTitleLView* pList = GetTitleView();
 POSITION posSel = pList->GetFirstSelectedItemPosition();
 	while(posSel)
@@ -2372,6 +2374,26 @@ if(pUnit != NULL)
 		
 		
 	}
+
+}
+else//如果是同步状态
+{
+	int curpos=GetCurrentPos();
+PTITLE_UNIT pUnit = m_Action.GetItem(curpos, FALSE);
+
+if(pUnit != NULL)
+	{
+		if((pUnit->dwFlags & FLAG_MARKMASK) == FLAG_TITLEMARK1)
+		{
+			pUnit->dwFlags &= FLAG_MARKCLEAR;
+		}
+		else
+		{
+			pUnit->dwFlags &= FLAG_MARKCLEAR;
+			pUnit->dwFlags |= FLAG_TITLEMARK1;
+		}
+	}
+}
 		UpdateRefWin();
 
 }
