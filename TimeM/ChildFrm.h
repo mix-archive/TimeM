@@ -22,6 +22,7 @@ public:
 // й╣ож
 public:
 	virtual ~CChildFrame();
+	virtual   void   OnUpdateFrameTitle(BOOL   bAddToTitle);
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

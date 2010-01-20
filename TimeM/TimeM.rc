@@ -507,7 +507,7 @@ BEGIN
             VALUE "LegalCopyright", "人人影视网站及作者，保留所有权利。"
             VALUE "OriginalFilename", "TimeM.exe"
             VALUE "ProductName", "TimeM字幕工具"
-            VALUE "ProductVersion", "0, 37, 0, 101"
+            VALUE "ProductVersion", "2010.01.20"
         END
     END
     BLOCK "VarFileInfo"

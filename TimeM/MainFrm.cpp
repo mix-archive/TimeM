@@ -179,6 +179,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 */
 	PerformSettings();
 
+
+
 	return 0;
 }
 
@@ -359,6 +361,7 @@ void CMainFrame::OnApplicationLook(UINT id)
 void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
+
 }
 
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
@@ -488,6 +491,41 @@ void CMainFrame::OnSubTitleWeb(UINT nCmdID)
 	if(!strUrl.IsEmpty())
 		::ShellExecute(NULL, NULL, _T("iexplore"), strUrl, NULL, SW_SHOW);
 }
+BOOL CompareVer(const CString& Verdatestr,const CString& newverstr,CString& prompt)
+{
+	//2009.12.29
+	CString new1,new2,old1;
+	int lastvernum=0,tempvernum,oldnum;
+int pos=-1;
+	while(1)
+	{
+		pos=newverstr.Find('\n',pos+1);
+		if(pos==-1)
+			break;
+new1=newverstr.Mid(pos);
+new2=new1;
+new1.Replace(_T("."),_T(""));
+tempvernum=_ttoi(new1);
+if(tempvernum>2000)
+{
+lastvernum=tempvernum;
+prompt=new2;
+}
+	}
+	
+
+old1=Verdatestr;
+
+old1.Replace(_T("."),_T(""));
+
+
+oldnum=_ttoi(old1);
+
+if(lastvernum!=oldnum)
+return true;
+else
+return false;
+}
 void CMainFrame::OnUpdateNew()
 {
 CHttpFile* pFile;
@@ -502,17 +540,8 @@ CString tempnamebuf,upfilename,oldlog,newlog;
 upfilename=_T("更新日志.txt");
 TCHAR szbuf[1024];
 BOOL nLen=0;
-if(!filesave.Open(complete_path(upfilename),CFile::modeCreate|CFile::modeNoTruncate|CFile::modeReadWrite))
-{
-	MessageBox(_T("创建文件失败"),_T("几乎是不可能事件！"),0);
-		return;
 
-}
-	while(nLen=filesave.Read(szbuf,1024))
-	{
-		szbuf[nLen/sizeof(TCHAR)]=0;
-		oldlog+=szbuf;
-	}
+
 
 	try{
 	
@@ -554,9 +583,8 @@ while(nLen=pFile->Read(szbuf,1024))
 
 }
 TCHAR rplchr=0xfeff;
-oldlog.Trim(rplchr);
+
 newlog.Trim(rplchr);
-oldlog.Trim();
 newlog.Trim();
 
 }
@@ -573,15 +601,17 @@ pFile->Close();
    pConnection->Close();
      delete pFile;
         delete pConnection;
-if(newlog.GetLength()>oldlog.GetLength())
+		
+		CString newprompt;
+	//	if(newlog.GetLength()>oldlog.GetLength())
+		//newprompt=newlog.Mid(oldlog.GetLength());	
+if(CompareVer(Verdatestr,newlog,newprompt))
 {
-CString newprompt=newlog.Mid(oldlog.GetLength());	
+
 if(IDOK==MessageBox(newprompt,_T("发现新版本，请确认是否下载"),MB_OKCANCEL))
 {
-filesave.SetLength(0);
-filesave.WriteString(newlog);
-filesave.WriteString(_T("\r\n"));
-filesave.Close();
+
+
 
 ShellExecute(NULL,NULL,_T("iexplore"),timemfile,NULL,1);
 }

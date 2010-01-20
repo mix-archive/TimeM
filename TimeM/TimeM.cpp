@@ -6,7 +6,7 @@
 #include "afxwinappex.h"
 #include "TimeM.h"
 #include "MainFrm.h"
-
+#include "TitleHelper.h"
 #include "TimeMDoc.h"
 #include "ChildFrm.h"
 #include "TitleLView.h"
@@ -18,7 +18,7 @@
 
 
 // CTimeMApp
-
+TCHAR Verdatestr[32];
 BEGIN_MESSAGE_MAP(CTimeMApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CTimeMApp::OnAppAbout)
 	// 基于文件的标准文档命令
@@ -78,6 +78,9 @@ BOOL CTimeMApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("YYeTs"));
 	LoadStdProfileSettings(8);  // 加载标准 INI 文件选项(包括 MRU)
+TCHAR bufname[256];
+GetModuleFileName(NULL,bufname,256);
+	CTitleHelper::GetFileVersion(bufname,_T("ProductVersion"),Verdatestr);
 
 	InitContextMenuManager();
 
@@ -136,6 +139,8 @@ BOOL CTimeMApp::InitInstance()
 	// 主窗口已初始化，因此显示它并对其进行更新
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+
+		
 
 	return TRUE;
 }

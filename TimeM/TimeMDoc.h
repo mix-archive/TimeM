@@ -166,6 +166,7 @@ protected:
 public:
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual void OnCloseDocument();
+		virtual void SetTitle(LPCTSTR lpszTitle);
 public:
 	virtual void DeleteContents();
 

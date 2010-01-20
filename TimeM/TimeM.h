@@ -15,7 +15,7 @@
 // CTimeMApp:
 // 有关此类的实现，请参阅 TimeM.cpp
 //
-
+extern TCHAR Verdatestr[32];
 class CTimeMApp : public CWinAppEx
 {
 public:

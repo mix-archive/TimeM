@@ -333,6 +333,8 @@ CString	CTitleHelper::FormatASSString(PTITLE_UNIT pUnit, const CString& strPreCo
 */
 BOOL CTitleHelper::IsWordBreak(TCHAR ch)
 {
+	
+
 	if(ch == _T(' '))
 		return TRUE;
 	return FALSE;
@@ -610,7 +612,7 @@ return false;
 	{
 if(strSentence[i]<=32||strSentence[i]>=127)
 continue;
-else if(strSentence[i]=='.'||strSentence[i]=='?')
+else if(strSentence[i]=='.'||strSentence[i]=='?'||strSentence[i]=='!'||strSentence[i]=='\"')
 		break;
 else
 	{	
@@ -650,22 +652,102 @@ else
 	}
 	return false;
 }
+BOOL CTitleHelper::GetFileVersion(LPCTSTR filename,LPCTSTR querystr,LPTSTR backbuf)//InternalName FileDescription LegalTradeMarks OriginalFileName ProductName ProductVersion
+{
+struct LANGANDCODEPAGE
+{
+	WORD wLanguage;
+	WORD wCodePage;
+} *lpTranslate;
+
+	DWORD dwDummy = 0;
+	UINT dwBytes=::GetFileVersionInfoSize(filename, &dwDummy );
+	if(dwBytes<1)
+	{
+		
+		return false;
+	}
+	TCHAR* info=new TCHAR[dwBytes];
+	if(GetFileVersionInfo(filename,NULL,dwBytes,info))
+	{
+		HRESULT hr;
+
+		//MessageBox(info);
+
+		UINT cbTranslate=512;
+		TCHAR SubBlock[512];
+		TCHAR *lpBuffer=NULL;
+
+
+		VerQueryValue(info, 
+			TEXT("\\VarFileInfo\\Translation"),
+			(LPVOID*)&lpTranslate,
+			&cbTranslate);
+
+
+		// Read the file description for each language and code page.
+
+		for( int i=0; i < (cbTranslate/sizeof(struct LANGANDCODEPAGE)); i++ )//if(cbTranslate>0)
+		{
+
+			_stprintf(SubBlock,TEXT("\\StringFileInfo\\%04x%04x\\%s"),lpTranslate[i].wLanguage,lpTranslate[i].wCodePage,querystr);
+
+			// Retrieve file description for language and code page "i". 
+			BOOL vok=VerQueryValue(info, 
+				SubBlock, 
+				(LPVOID *)&lpBuffer, 
+				&dwBytes); 
+			
+			if(vok==0)
+			{
+			_stprintf(SubBlock,TEXT("\\StringFileInfo\\%04x%04x\\%s"),lpTranslate[i].wLanguage,0x04e4,querystr);
+				// Retrieve file description for language and code page "i". 
+				vok=VerQueryValue(info, 
+					SubBlock, 
+					(LPVOID *)&lpBuffer, 
+					&dwBytes); 
+
+			}
+
+			int dfal=lstrlen(lpBuffer) ;
+			if(dfal>2)
+			{
+				lstrcpy(backbuf,lpBuffer);
+				return true;//break;
+			}
+		}
+			
+		}
+return false;
+}
+
 void CTitleHelper::CCMakeUpper(CString& strSentence)
 {
 strSentence.Replace(_T("，"),_T(","));
 strSentence.Replace(_T("‘"),_T("'"));
 
-	int pos=0;
+	int pos=1;
 while(pos<strSentence.GetLength())
 {
 	
 if(Islowerfun(strSentence.GetAt(pos),pos,strSentence))
 {
+
 	strSentence.SetAt(pos,strSentence[pos]-32);//变成大写
 }
 pos++;
 }
 
+}
+BOOL CTitleHelper::IsAllUpper(const CString& strSentence)//判断是否整个句子都是大写
+{
+	
+for(int i=0;i<strSentence.GetLength();i++)
+{
+if(strSentence[i]>='a'&&strSentence[i]<='z')
+return false;
+}
+return true;
 }
 void CTitleHelper::CCSentence(CString& strSentence)
 {
@@ -688,8 +770,11 @@ void CTitleHelper::CCSentence(CString& strSentence)
 		case _T(']'):	if(nFlag == 0)nFlag = 2;	iPos -- ;continue;
 		case _T('}'):	if(nFlag == 0)nFlag = 3;	iPos -- ;continue;
 		case _T('>'):	if(nFlag == 0)nFlag = 4;	iPos -- ;continue;
-		case _T(':'):	if(iPos>0&&(lpszData[iPos-1]<'0'||lpszData[iPos-1]>'9'))
-						{nFlag = 100;				break;}
+		case _T(':'):	if(iPos>0&&iPos<10)//&&(lpszData[iPos-1]<'0'||lpszData[iPos-1]>'9'))
+						{
+
+							nFlag = 100;				break;//防止误删
+						}
 						else
 						{
 							nFlag = 0;break;
@@ -740,11 +825,17 @@ void CTitleHelper::CCSentence(CString& strSentence)
 	strSentence = strSentence.Trim(_T("* "));
 	if(!CTitleHelper::IsDBCSString(strSentence))
 	{
+		if(IsAllUpper(strSentence))//ncucf 如果本身就是大小写正确的
+		{
 		strSentence.MakeLower();
 		CString strChar = strSentence.Left(1);
+		
+
 		strChar.MakeUpper();
 		strSentence.GetBuffer()[0] = strChar[0];
+
 		strSentence.ReleaseBuffer();
+		}
 	}
 }
 
@@ -811,6 +902,14 @@ BOOL CTitleHelper::BreakTitleUnit(int nPos, PTITLE_UNIT pUnit1, PTITLE_UNIT pUni
 	LPTSTR lpszData = pUnit1->content.GetBuffer();
 	int nPreBreak = -1;
 	int nSufBreak = -1;
+TCHAR ch=pUnit1->content[nPos];
+		if(0)//ch== _T(';')||ch==_T(',')||ch==_T('.')||ch==_T('?')||ch==_T('!'))//智能切分 ncucf
+		{
+ nPreBreak = nPos;
+	nSufBreak = nPos;
+		}
+		else
+		{
 	for(int iStep = 0; iStep < nPos; iStep ++)
 	{
 		if((nPreBreak == -1)
@@ -828,17 +927,12 @@ BOOL CTitleHelper::BreakTitleUnit(int nPos, PTITLE_UNIT pUnit1, PTITLE_UNIT pUni
 		||(nSufBreak == (nLen - 1))
 		||(nSufBreak == -1))
 		return FALSE;
-
+		}
 	int nPriorityPos = CTitleHelper::SelectPriorityChar(lpszData, nPos, nPreBreak, nSufBreak);
 	if(nPriorityPos > -1)
 	{
 		LPTSTR lpszData2 = pUnit2->content.GetBufferSetLength( nLen - nPriorityPos - 1);
-	/*	TCHAR str[256],str2[256];
 
-CopyMemory(str, lpszData + 31, 31);
-CopyMemory(str, lpszData + 31, 50);
-CopyMemory(str2, lpszData , 31);
-CopyMemory(str2, lpszData , 50);*/
 
 		CopyMemory(lpszData2, lpszData + nPriorityPos + 1, (nLen - nPriorityPos - 1)*sizeof(TCHAR));
 		pUnit2->content.ReleaseBufferSetLength(nLen - nPriorityPos - 1);
@@ -867,10 +961,13 @@ pUnit2->content.TrimLeft();
 TCHAR fuhaobuf[]={',','.','?',';','!'};
 BOOL CTitleHelper::BreakUnitByShare(int nShare, PTITLE_UNIT pUnit1, PTITLE_UNIT pUnit2)
 {
+	BOOL rtflag;
+	int featurenum=0;
 	if( nShare < 2)
 		return FALSE;
 	int nLen = pUnit1->content.GetLength();
 	int nPos = nLen / nShare;
+nPos-=10;
 	int breakpos=0;
 	int minnum=100;
 	int curnum=0;
@@ -879,6 +976,7 @@ BOOL CTitleHelper::BreakUnitByShare(int nShare, PTITLE_UNIT pUnit1, PTITLE_UNIT 
 breakpos=pUnit1->content.Find(fuhaobuf[i],nPos);
 if(breakpos!=-1)
 {
+	featurenum=i;
 curnum=breakpos-nPos;
 
 	if(minnum>curnum)
@@ -886,12 +984,17 @@ curnum=breakpos-nPos;
 }
 
 	}
-if(minnum<10)
+if(minnum<20)
 {
 nPos+=minnum;
 }
 
-	return BreakTitleUnit(nPos, pUnit1, pUnit2);
+	rtflag=BreakTitleUnit(nPos, pUnit1, pUnit2);
+	if(featurenum!=0)
+	{
+	
+	}
+	return rtflag;
 }
 
 BOOL CTitleHelper::BreakUnitByTimeSpin(int nTimeSpin, PTITLE_UNIT pUnit1, PTITLE_UNIT pUnit2)

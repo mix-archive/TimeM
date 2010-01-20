@@ -163,7 +163,7 @@ CTimeMDoc::CTimeMDoc()
 	m_DetailWnd = NULL;
 	m_bBakModified = FALSE;
 	m_nSaveState = 0;
-
+   
 }
 
 CTimeMDoc::~CTimeMDoc()
@@ -324,9 +324,20 @@ BOOL CTimeMDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	m_hSyncThd = CreateThread(NULL, 0, PlaySyncThd, (LPVOID)this, 0, NULL);
 	SetCurrentDirectory(GetPathName());
+
+ 
 	return TRUE;
 }
-
+void CTimeMDoc::SetTitle(LPCTSTR lpszTitle)
+{
+     	CString strtitle;
+strtitle=Verdatestr;
+strtitle+=_T(" - ");
+strtitle+=lpszTitle;
+	//SetWindowText(strtitle);                               //   change   frame   title   
+              
+CDocument::SetTitle(strtitle);
+}
 void CTimeMDoc::OnCloseDocument()
 {
 	m_bThdBreak = TRUE;
@@ -1460,7 +1471,7 @@ void CTimeMDoc::PreProcessCC()
 		
 		CTitleHelper::CCSentence(pUnit->content);
 		CTitleHelper::RemoveDupSpace(pUnit->content);
-		CTitleHelper::CCMakeUpper(pUnit->content);//大写 ncucf
+		CTitleHelper::CCMakeUpper(pUnit->content);//句子首字母大写 ncucf
 		if(pUnit->content.IsEmpty())
 		{
 			m_Action.Erase(iTitle);

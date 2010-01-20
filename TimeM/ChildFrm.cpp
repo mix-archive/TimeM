@@ -37,7 +37,21 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	return TRUE;
 }
-
+void   CChildFrame::OnUpdateFrameTitle(BOOL   bAddToTitle)   
+  {   
+        //   First   let   MFC   do   standard   title   
+        CMDIChildWnd::OnUpdateFrameTitle(bAddToTitle);   
+          
+        CDocument*   pDoc   =   GetActiveDocument();   
+        if   (pDoc)   {   
+              CMultiDocTemplate*   pTemplate   =     
+                    (CMultiDocTemplate*)pDoc->GetDocTemplate();   
+              ASSERT_KINDOF(CMultiDocTemplate,   pTemplate);   
+              ASSERT_VALID(pTemplate);   
+    
+          
+        }   
+  }
 // CChildFrame ’Ô∂œ
 
 #ifdef _DEBUG

@@ -20,7 +20,10 @@ static CString CTitleHelper::GetEnumFileInfo(LPCTSTR filepath,LPCTSTR seps);
 
 	static void		RemoveDupSpace(CString& strSentence);
 	static void		CCSentence(CString& strSentence);
+	static BOOL CTitleHelper::IsAllUpper(const CString& strSentence);
 static void		CCMakeUpper(CString& strSentence);
+static BOOL CTitleHelper::GetFileVersion(LPCTSTR filename,LPCTSTR querystr,LPTSTR backbuf);//InternalName FileDescription LegalTradeMarks OriginalFileName ProductName ProductVersion
+
 static BOOL Islowerfun(TCHAR charactor,int pos,const CString& strSentence);
 static BOOL GetEngNameFromRow(const CString& strSentence,CStr2KeepMap& engnameset);
 static void CTitleHelper::IsDuplication(CString& strSentence);
